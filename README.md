@@ -1,14 +1,29 @@
-# Sapper Authentication Demo
+# TankieNewsv2
 
-A demonstration of Authentication with Sapper
+v2 of the Tankie News website built using Svelte/Sapper, MongoDB, and QuillJS.
+
+Building from scratch, including functional:
+
+* Content Management System (CMS)
+* User Sessions
 
 Includes:
 
+* Bcrypt (securely salt, hash, and store password in database)
 * JWT
 * Secure cookies
 * HTTP Only cookies
 
+## Prerequisites
+
+* Install node.js
+* Clone repository to your device
+
 ## Usage
 
+* Navigate to root of project directory:
+`cd projectRoot`
+* Install Node dependencies:
+`npm install` 
+* Run in dev mode:
 `npm run dev`
-# TankieNewsv2
