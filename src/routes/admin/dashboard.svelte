@@ -1,20 +1,22 @@
 <script>
   import { goto, stores } from '@sapper/app'
   import { onMount } from 'svelte'
+  //TODO: figure out best way to import css from node module for the editor, which is created onMount
+  import '../../../node_modules/quill/dist/quill.snow.css'
   const { session } = stores()
   let quill
   let editor
   let title;
 	
 	onMount(async() => {
-    import('quill/dist/quill.snow.css')
-		const { default: Quill } = await import('quill')
+    const { default: Quill } = await import('quill')
+    //import('quill/dist/quill.snow.css')
 		quill = new Quill(editor, {
         modules: {
           toolbar: [
             [{ header: [2, 3, false] }],
             [{ 'align': [] }],
-            ["bold", "italic", "underline", "strike", "blockquote"],
+            ["bold", "italic", "underline", "strike", "blockquote", "clean"],
             [{ 'list': 'ordered'}, { 'list': 'bullet' }],
             [{ 'script': 'sub'}, { 'script': 'super' }],
             ["image"]
@@ -48,6 +50,7 @@
   let password = ''
 
 </script>
+
 
 
 <h1>Site Admin</h1>
