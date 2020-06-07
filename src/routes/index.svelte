@@ -70,7 +70,7 @@
 </form>
 <br>
 <form>
-<p>SignUp</p>
+<p>Sign Up</p>
 <select bind:value={email}>
   <option value={null}>-- Select User Type --</option>
   <option value="admin@example.com">Test Admin</option>
