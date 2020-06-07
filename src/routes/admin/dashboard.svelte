@@ -2,7 +2,7 @@
   import { goto, stores } from '@sapper/app'
   import { onMount } from 'svelte'
   //TODO: figure out best way to import css from node module for the editor, which is created onMount
-  import '../../../node_modules/quill/dist/quill.snow.css'
+  import 'quill/dist/quill.snow.css'
   const { session } = stores()
   let quill
   let editor
