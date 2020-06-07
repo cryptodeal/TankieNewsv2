@@ -57,16 +57,20 @@
 <nav>
 	<ul>
 		<li><a aria-current='{segment === undefined ? "page" : undefined}' href='.'>home</a></li>
-    {#if $session.authenticated}
-      <li><a aria-current='{segment === "profile" ? "page" : undefined}' href='profile'>profile</a></li>
-      {#if $session.profile.scope.includes('owner')}
-        <li><a aria-current='{segment === "organisation" ? "page" : undefined}' href='organisation'>my organisation</a></li>
-      {:else if $session.profile.scope.includes('admin')}
-        <li><a aria-current='{segment === "admin" ? "page" : undefined}' href='admin'>admin tools</a></li>
+		<li><a aria-current='{segment === "articles" ? "page" : undefined}' href='articles'>articles</a></li>
+    	{#if $session.authenticated}
+      		<li><a aria-current='{segment === "profile" ? "page" : undefined}' href='profile'>profile</a></li>
+      	{#if $session.profile.scope.includes('owner')}
+        	<li><a aria-current='{segment === "organisation" ? "page" : undefined}' href='organisation'>my organisation</a></li>
+      	{:else if $session.profile.scope.includes('admin')}
+        	<li><a aria-current='{segment === "admin" ? "page" : undefined}' href='admin/dashboard'>admin dashboard</a></li>
       {/if}
     {/if}
 	</ul>
   <ul>
+	{#if !$session.authenticated}
+    <li><a href='login'>login</a></li>
+    {/if}
     {#if $session.authenticated}
     <li><a href='logout'>log out</a></li>
     {/if}

@@ -2,12 +2,13 @@
   import { goto, stores } from '@sapper/app'
   
   const { session } = stores()
-  
-  let email = null
-  let password = 'user123'
 
-  async function login () {
-    await fetch('http://localhost:2000/session', {
+  let email = null
+  let password = ''
+  
+
+  async function signUp () {
+    await fetch('http://localhost:3000/api/signup', {
       method: 'POST',
       mode: 'cors',
       credentials: 'include',
@@ -18,8 +19,31 @@
         email,
         password
       })
-    })
+    }).then(function(response) {
+    if (response.status === 401) {
+      alert("Incorrect email or password. Please try again.")
+    }
+  })
+    window.location.href= 'profile' 
+  }
 
+    async function login () {
+    await fetch('http://localhost:3000/api/session', {
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email,
+        password
+      })
+    }).then(function(response) {
+    if (response.status === 401) {
+      alert("Incorrect email or password. Please try again.")
+    }
+  })
     window.location.href= 'profile' 
   }
 </script>
@@ -35,11 +59,27 @@
 <p>Login</p>
 <select bind:value={email}>
   <option value={null}>-- Select User Type --</option>
-  <option value="user@example.com">Regular</option>
-  <option value="owner@example.org">Owner</option>
-  <option value="admin@example.net">Admin</option>
+  <option value="admin@example.com">Test Admin</option>
+  <option value="contributor@example.org">Test Contributor</option>
+  <option value="moderator@example.org">Test Moderator</option>
+  <option value="subscriber@example.net">Test Subscriber</option>
+  <option value="user@example.net">Test User</option>
 </select>
-<input type="password" bind:value={password} />
-<button type="button" disabled={!email} on:click={login}>Log in</button>
+<input id="password" type="password" bind:value={password} />
+<button id="login" type="button" disabled={!email} on:click={login}>Login</button>
+</form>
+<br>
+<form>
+<p>SignUp</p>
+<select bind:value={email}>
+  <option value={null}>-- Select User Type --</option>
+  <option value="admin@example.com">Test Admin</option>
+  <option value="contributor@example.org">Test Contributor</option>
+  <option value="moderator@example.org">Test Moderator</option>
+  <option value="subscriber@example.net">Test Subscriber</option>
+  <option value="user@example.net">Test User</option>
+</select>
+<input id="password" type="password" bind:value={password} />
+<button id="login" type="button" disabled={!email} on:click={signUp}>Sign Up</button>
 </form>
 {/if}

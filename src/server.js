@@ -4,6 +4,11 @@ import compression from 'compression'
 import * as sapper from '@sapper/server'
 import jwt from 'jsonwebtoken'
 import cookieParser from 'cookie-parser'
+const { json } = require('body-parser');
+const secureRandom = require('secure-random');
+
+const signingKey = secureRandom(256, {type: 'Buffer'});
+export default signingKey;
 
 import { guard } from '@beyonk/sapper-rbac'
 import routes from './config/routes.js'
@@ -16,9 +21,10 @@ polka()
     compression({ threshold: 0 }),
     sirv('static', { dev }),
     cookieParser(),
+    json(),
 
     (req, res, next) => {
-      const token = req.cookies['my-jwt']
+      const token = req.cookies['authToken']
       const profile = token ? jwt.decode(token) : false
       const options = {
         routes,
