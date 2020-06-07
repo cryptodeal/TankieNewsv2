@@ -17,6 +17,7 @@ Includes:
 ## Prerequisites
 
 * Install node.js
+* Install and run MongoDB (OSx I recommend [instructions](https://zellwk.com/blog/install-mongodb/))
 * Clone repository to your device
 
 ## Usage
