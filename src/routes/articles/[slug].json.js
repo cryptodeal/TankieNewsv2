@@ -1,4 +1,4 @@
-//import posts from './_posts.js';
+// posts from './_posts.js';
 import { findArticle } from '../../mongoose'
 
 export async function get(req, res, next) {

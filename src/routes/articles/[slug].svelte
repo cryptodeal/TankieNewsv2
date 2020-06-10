@@ -60,5 +60,10 @@
 <h1>{post.title}</h1>
 
 <div class='content'>
-	{@html post.content.extended}
+	{#if !post.content}
+		<p>No post data</p>
+		
+	{:else}
+		{@html post.content.extended}
+	{/if}
 </div>

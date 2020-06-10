@@ -1,16 +1,22 @@
-import posts from './_posts.js';
+//import posts from './_posts.js';
+import { listArticles } from '../../mongoose'
 
-const contents = JSON.stringify(posts.map(post => {
-	return {
-		title: post.title,
-		slug: post.slug
-	};
-}));
+function getContents(cb){
+	let posts = listArticles(function(posts){
+		let content = JSON.stringify(posts.map(post => ({ 
+			title: post.title,
+			slug: post.slug
+		})));
+		return cb(content)
+	});
+}
 
 export function get(req, res) {
-	res.writeHead(200, {
-		'Content-Type': 'application/json'
+	let content = getContents(function(content){
+		res.writeHead(200, {
+			'Content-Type': 'application/json'
+		});
+	
+		res.end(content);
 	});
-
-	res.end(contents);
 }
