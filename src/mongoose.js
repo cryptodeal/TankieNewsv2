@@ -71,3 +71,14 @@ export async function savePost(title, extended, cb) {
     }
 
 }
+
+export async function listArticles(cb) {
+    let articles = await Post.find({}).limit(10).lean();
+    return cb(articles)
+}
+
+export async function findArticle(slug, cb) {
+    let article = await Post.find({slug: slug}).lean()
+    console.log(article)
+    return cb(article)
+}

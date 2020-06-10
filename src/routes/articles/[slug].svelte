@@ -6,7 +6,7 @@
 		const data = await res.json();
 
 		if (res.status === 200) {
-			return { post: data };
+			return { post: data[0] };
 		} else {
 			this.error(res.status, data.message);
 		}
@@ -60,5 +60,5 @@
 <h1>{post.title}</h1>
 
 <div class='content'>
-	{@html post.html}
+	{@html post.content.extended}
 </div>

@@ -7,7 +7,7 @@
   let quill
   let editor
   let title;
-	
+
 	onMount(async() => {
     const { default: Quill } = await import('quill')
     //import('quill/dist/quill.snow.css')
@@ -17,8 +17,8 @@
             [{ header: [2, 3, false] }],
             [{ 'align': [] }],
             ["bold", "italic", "underline", "strike", "blockquote", "clean"],
-            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-            [{ 'script': 'sub'}, { 'script': 'super' }],
+            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+            [{ 'script': 'sub' }, { 'script': 'super' }],
             ["image"]
           ]
         },
