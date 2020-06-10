@@ -1,7 +1,7 @@
 // posts from './_posts.js';
 import { findArticle } from '../../mongoose'
 
-export async function get(req, res, next) {
+export function get(req, res, next) {
 	const { slug } = req.params;
     console.log(`fetching article...`);
     findArticle(slug, function(article){
@@ -14,7 +14,6 @@ export async function get(req, res, next) {
             res.writeHead(404, {
 				'Content-Type': 'application/json'
 			});
-	
 			res.end(JSON.stringify({
 				message: `Not found`
 			}));
