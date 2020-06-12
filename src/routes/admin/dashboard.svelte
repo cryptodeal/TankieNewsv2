@@ -58,4 +58,4 @@ Title:
 <input type="text" bind:value={title} />
 <br/>
 <div bind:this={editor}></div>
-<button on:click={saveArticle}>Save</button>
+<button on:click|preventDefault={saveArticle}>Save</button>
