@@ -1,5 +1,6 @@
 <script>
   import Nav from "../components/Nav.svelte";
+  import Image from "svelte-image";
   import routes from "../config/routes.js";
   import { guard } from "@beyonk/sapper-rbac";
   import { tick } from "svelte";
@@ -31,8 +32,16 @@
     margin: 0 auto;
     box-sizing: border-box;
   }
-</style>
 
+  .logo-container {
+
+		width: 100%;
+	  /*will-change: transform;*/
+	}
+</style>
+<div class='logo-container'>
+  <Image src='title.png' alt="Tankie News Network logo"/>
+</div>
 <Nav {segment} />
 
 <main>

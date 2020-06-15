@@ -26,12 +26,10 @@
         theme: "snow" // or 'bubble'
       });
     })
-  function testSave(){
-    fetch('http://localhost:3000/api/content/articles')
-  }
+
   async function saveArticle() {
     console.log(`here is the inner html: ${quill.root.innerHTML}`)
-    await fetch(`http://localhost:3000/api/content/articles`, {
+    let res = await fetch(`http://localhost:3000/api/content/articles`, {
       method: "POST",
       mode: 'cors',
       credentials: 'include',
@@ -42,7 +40,15 @@
         title: title,
         extended: quill.root.innerHTML,
       })
-    });
+    })
+    const data = await res.json();
+		if (res.status === 201) {
+			alert(data.message)
+		} if (res.status === 401) {
+			alert(data.message)
+		} else {
+      this.error(res.status, data.message);
+    }
 
   };
 

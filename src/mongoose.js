@@ -39,6 +39,7 @@ export async function validateUser(email, password, cb) {
         }
     })
 }
+
 //API function
 export async function createToken(user, cb) {
     let claims = {
@@ -48,6 +49,16 @@ export async function createToken(user, cb) {
     }
     const token = await nJwt.create(claims,signingKey).compact();
     return cb(token)
+}
+
+export async function verifyToken(token, cb) {
+    nJwt.verify(token, signingKey, function(err, verifiedJwt){
+        if(err){
+          return cb(err); // Token has expired, has been tampered with, etc
+        }else{
+          return cb(null, verifiedJwt); // Will contain the header and body
+        }
+      });
 }
 
 //API functions for interacting with Post Model

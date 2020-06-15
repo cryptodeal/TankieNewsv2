@@ -6,6 +6,7 @@ import babel from 'rollup-plugin-babel';
 import { terser } from 'rollup-plugin-terser';
 import config from 'sapper/config/rollup.js';
 import pkg from './package.json';
+import image from "svelte-image";
 
 const mode = process.env.NODE_ENV;
 const dev = mode === 'development';
@@ -26,6 +27,19 @@ export default {
 				dev,
 				hydratable: true,
 				emitCss: true,
+				preprocess: {
+					...image({
+						placeholder: 'blur',
+						quality: 100,
+						compressionLevel: 0,
+						webpOptions: {
+							quality: 100,
+							lossless: true,
+							force: true
+						  },
+
+					}),
+				  }
 			}),
 			resolve({
 				browser: true,
@@ -68,7 +82,19 @@ export default {
 			}),
 			svelte({
 				generate: 'ssr',
-				dev
+				dev,
+				preprocess: {
+					...image({
+						placeholder: 'blur',
+						quality: 100,
+						compressionLevel: 0,
+						webpOptions: {
+							quality: 100,
+							lossless: true,
+							force: true
+						  },
+					}),
+				  }
 			}),
 			resolve({
 				dedupe: ['svelte']
