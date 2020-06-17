@@ -7,6 +7,7 @@
 </script>
 
 <script>
+	import Image from 'svelte-image'
 	export let posts;
 </script>
 
@@ -22,7 +23,6 @@
 </svelte:head>
 
 <h1>Recent posts</h1>
-
 <ul>
 	{#each posts as post}
 		<!-- we're using the non-standard `rel=prefetch` attribute to

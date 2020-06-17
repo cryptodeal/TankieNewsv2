@@ -27,19 +27,11 @@ export default {
 				dev,
 				hydratable: true,
 				emitCss: true,
-				preprocess: {
-					...image({
-						placeholder: 'blur',
-						quality: 100,
-						compressionLevel: 0,
-						webpOptions: {
-							quality: 100,
-							lossless: true,
-							force: true
-						  },
-
-					}),
-				  }
+				preprocess: image({
+					placeholder: 'blur',
+					sizes: [650, 800, 1050, 1400, 1650, 1950],
+					breakpoints: [640, 768, 1024, 1366, 1600, 1920]
+			}),
 			}),
 			resolve({
 				browser: true,
@@ -82,19 +74,7 @@ export default {
 			}),
 			svelte({
 				generate: 'ssr',
-				dev,
-				preprocess: {
-					...image({
-						placeholder: 'blur',
-						quality: 100,
-						compressionLevel: 0,
-						webpOptions: {
-							quality: 100,
-							lossless: true,
-							force: true
-						  },
-					}),
-				  }
+				dev
 			}),
 			resolve({
 				dedupe: ['svelte']

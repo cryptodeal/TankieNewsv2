@@ -7,7 +7,7 @@
   import { stores, goto } from "@sapper/app";
 
   const { page, session } = stores();
-
+  const image = Image;
   const options = {
     routes,
     deny: () => goto("/")
