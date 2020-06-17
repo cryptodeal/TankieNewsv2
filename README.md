@@ -13,6 +13,7 @@ Includes:
 * JWT
 * Secure cookies
 * HTTP Only cookies
+* Svelte-Image to generate resized images server side, storing in static/g and serve correct size to client
 
 ## Prerequisites
 
