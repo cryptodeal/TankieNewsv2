@@ -1,11 +1,8 @@
 <script>
   import { goto, stores } from '@sapper/app'
-  
   const { session } = stores()
-
   let email = null
   let password = ''
-  
 
   async function signUp () {
     await fetch('http://localhost:3000/api/signup', {
@@ -51,7 +48,6 @@
 <svelte:head>
 	<title>Sapper project template</title>
 </svelte:head>
-
 {#if $session.authenticated}
 <p>You are logged in as {$session.profile.name}</p>
 {:else}
@@ -83,3 +79,4 @@
 <button id="login" type="button" disabled={!email} on:click={signUp}>Sign Up</button>
 </form>
 {/if}
+

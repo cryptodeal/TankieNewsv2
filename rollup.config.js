@@ -31,7 +31,7 @@ export default {
 					placeholder: 'blur',
 					sizes: [650, 800, 1050, 1400, 1650, 1950],
 					breakpoints: [640, 768, 1024, 1366, 1600, 1920]
-			}),
+				}),
 			}),
 			resolve({
 				browser: true,
@@ -61,6 +61,7 @@ export default {
 			})
 		],
 
+		preserveEntrySignatures: false,
 		onwarn,
 	},
 
@@ -79,12 +80,13 @@ export default {
 			resolve({
 				dedupe: ['svelte']
 			}),
-			commonjs()
+			commonjs(),
 		],
 		external: Object.keys(pkg.dependencies).concat(
 			require('module').builtinModules || Object.keys(process.binding('natives'))
 		),
 
+		preserveEntrySignatures: 'strict',
 		onwarn,
 	},
 
@@ -101,6 +103,7 @@ export default {
 			!dev && terser()
 		],
 
+		preserveEntrySignatures: false,
 		onwarn,
 	}
 };

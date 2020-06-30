@@ -4,7 +4,7 @@
   //TODO: figure out best way to import css from node module for the editor, which is created onMount
   import 'quill/dist/quill.snow.css'
   const { session } = stores()
-  let quill
+
   let editor
   let title;
 
@@ -63,5 +63,7 @@
 Title:
 <input type="text" bind:value={title} />
 <br/>
-<div bind:this={editor}></div>
+<div class="editor-wrapper">
+  <div bind:this={editor}/>
+</div>
 <button on:click|preventDefault={saveArticle}>Save</button>
