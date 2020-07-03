@@ -34,7 +34,6 @@
   }
 
   .logo-container {
-
 		width: 100%;
 	  /*will-change: transform;*/
 	}

@@ -84,7 +84,7 @@ export async function savePost(title, extended, cb) {
 }
 
 export async function listArticles(cb) {
-    let articles = await Post.find({}).limit(10).lean();
+    let articles = await Post.find({}).lean();
     return cb(articles)
 }
 
