@@ -36,13 +36,19 @@
   .logo-container {
 		width: 100%;
 	  /*will-change: transform;*/
-	}
+  }
+  
 </style>
 <div class='logo-container'>
   <Image src='title.png' alt="Tankie News Network logo"/>
 </div>
 <Nav {segment} />
 
+{#if segment === 'admin'}
+  <slot></slot>
+{:else}
 <main>
-  <slot />
+  <slot></slot>
 </main>
+{/if}
+

@@ -86,11 +86,15 @@
               ['image', 'tweet']
             ],
             handlers: {
-              'tweet': async function(value){
+              'tweet': async function(){
                 //value = 'https://twitter.com/kekethekhaleesi/status/1278548261205352448'
-                value = prompt(`Enter the tweet's url:`)
-                const cursorPosition = this.quill.getSelection().index;
-                quill.insertEmbed(cursorPosition, 'tweet', { url: value });
+                let value = prompt(`Enter the tweet's url:`)
+                if(value === '' || value == null){
+                  return null;
+                } else{
+                  const cursorPosition = this.quill.getSelection().index;
+                  quill.insertEmbed(cursorPosition, 'tweet', { url: value });
+                }
               }
             }
           }
@@ -120,12 +124,56 @@
 
   };
 </script>
+<style>
+  * {
+    box-sizing: border-box;
+  }
 
-<h1>Site Admin</h1>
-Title:
-<input type="text" bind:value={title} />
-<br/>
-<div class="editor-wrapper">
-  <div bind:this={editor}/>
-</div>
-<button on:click|preventDefault={saveArticle}>Save</button>
+  .row {
+    display: flex;
+  }
+  main {
+    position: relative;
+    background-color: white;
+    margin: 0 auto;
+    box-sizing: border-box;
+  }
+  .column1 {
+    flex: 15%;
+    padding: 10px;
+    background-color: #d74e4d;
+  }
+  .column1 a {
+    padding: 6px 8px 6px 16px;
+    text-decoration: none;
+    font-size: 15px;
+    color: #363636;
+    display: inherit;
+  }
+  .column2 {
+    flex: 85%;
+    padding: 10px;
+  }
+  .column1 a:hover {
+    color: #ffffff;
+  }
+</style>
+
+<main>
+  <div class="row">
+    <div class="column1">
+      <a href="admin/dashboard">Dashboard</a>
+      <a href="admin/articles">Manage Articles</a>
+    </div>
+    <div class="column2">
+      <h1>Site Admin</h1>
+      Title:
+      <input type="text" bind:value={title} />
+      <br/>
+      <div class="editor-wrapper">
+        <div bind:this={editor}/>
+      </div>
+  <button on:click|preventDefault={saveArticle}>Save</button>
+    </div>
+  </div>
+</main>

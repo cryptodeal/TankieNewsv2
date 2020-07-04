@@ -44,39 +44,46 @@
     window.location.href= 'profile' 
   }
 </script>
+<style>
+  .main-box {
+    max-width: 56em;
+  }
+</style>
 
 <svelte:head>
 	<title>Sapper project template</title>
 </svelte:head>
-{#if $session.authenticated}
-<p>You are logged in as {$session.profile.name}</p>
-{:else}
-<form>
-<p>Login</p>
-<select bind:value={email}>
-  <option value={null}>-- Select User Type --</option>
-  <option value="admin@example.com">Test Admin</option>
-  <option value="contributor@example.org">Test Contributor</option>
-  <option value="moderator@example.org">Test Moderator</option>
-  <option value="subscriber@example.net">Test Subscriber</option>
-  <option value="user@example.net">Test User</option>
-</select>
-<input id="password" type="password" bind:value={password} />
-<button id="login" type="button" disabled={!email} on:click={login}>Login</button>
-</form>
-<br>
-<form>
-<p>Sign Up</p>
-<select bind:value={email}>
-  <option value={null}>-- Select User Type --</option>
-  <option value="admin@example.com">Test Admin</option>
-  <option value="contributor@example.org">Test Contributor</option>
-  <option value="moderator@example.org">Test Moderator</option>
-  <option value="subscriber@example.net">Test Subscriber</option>
-  <option value="user@example.net">Test User</option>
-</select>
-<input id="password" type="password" bind:value={password} />
-<button id="login" type="button" disabled={!email} on:click={signUp}>Sign Up</button>
-</form>
-{/if}
+<div class="main-box">
+  {#if $session.authenticated}
+  <p>You are logged in as {$session.profile.name}</p>
+  {:else}
+  <form>
+  <p>Login</p>
+  <select bind:value={email}>
+    <option value={null}>-- Select User Type --</option>
+    <option value="admin@example.com">Test Admin</option>
+    <option value="contributor@example.org">Test Contributor</option>
+    <option value="moderator@example.org">Test Moderator</option>
+    <option value="subscriber@example.net">Test Subscriber</option>
+    <option value="user@example.net">Test User</option>
+  </select>
+  <input id="password" type="password" bind:value={password} />
+  <button id="login" type="button" disabled={!email} on:click={login}>Login</button>
+  </form>
+  <br>
+  <form>
+  <p>Sign Up</p>
+  <select bind:value={email}>
+    <option value={null}>-- Select User Type --</option>
+    <option value="admin@example.com">Test Admin</option>
+    <option value="contributor@example.org">Test Contributor</option>
+    <option value="moderator@example.org">Test Moderator</option>
+    <option value="subscriber@example.net">Test Subscriber</option>
+    <option value="user@example.net">Test User</option>
+  </select>
+  <input id="password" type="password" bind:value={password} />
+  <button id="login" type="button" disabled={!email} on:click={signUp}>Sign Up</button>
+  </form>
+  {/if}
+</div>
 

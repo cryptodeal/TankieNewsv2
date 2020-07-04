@@ -7,7 +7,6 @@
 </script>
 
 <script>
-	import Image from 'svelte-image'
 	export let posts;
 </script>
 
