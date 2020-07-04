@@ -1,4 +1,3 @@
-//import posts from './_posts.js';
 import { listArticles } from '../../../mongoose'
 
 export function get(req, res) {

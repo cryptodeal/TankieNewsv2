@@ -1,13 +1,13 @@
 <script context="module">
-	export function preload({ params, query }) {
-		return this.fetch(`admin/articles.json`).then(r => r.json()).then(articles => {
+    export function preload({ params, query }) {
+		return this.fetch(`admin/manage-articles.json`).then(r => r.json()).then(articles => {
 			return { articles };
 		});
 	}
 </script>
 
 <script>
-	export let articles;
+    export let articles;
 </script>
 
 <style>
@@ -21,7 +21,6 @@
 
     .row {
         display: flex;
-        padding-top: 5px
     }
     main {
         position: relative;
@@ -30,8 +29,9 @@
         box-sizing: border-box;
     }
     .column1 {
-        flex: 15%;
         padding: 10px;
+        height: 100%;
+        flex: 15%;
         background-color: #d74e4d;
     }
     .column1 a {
@@ -57,8 +57,9 @@
 <main>
   <div class="row">
     <div class="column1">
-        <a href="admin/dashboard">Dashboard</a>
-        <a href="admin/articles">Manage Articles</a>
+        <a href='admin/dashboard'>Dashboard</a>
+        <a href='admin/manage-articles/new'>New Article</a>
+        <a href="admin/manage-articles">Edit Articles</a>
     </div>
     <div class="column2">
         <h1>Recent articles</h1>

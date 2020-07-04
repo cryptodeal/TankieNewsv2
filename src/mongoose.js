@@ -84,8 +84,16 @@ export async function savePost(title, extended, cb) {
 }
 
 export async function listArticles(cb) {
+    //add .populate('author')
+    //add .select('title, slug, author')
     let articles = await Post.find({}).lean();
     return cb(articles)
+}
+
+export async function listContributors(cb) {
+    let contributors = await User.find().select('email').lean();
+    console.log(contributors)
+    return cb(contributors)
 }
 
 export async function findArticle(slug, cb) {
