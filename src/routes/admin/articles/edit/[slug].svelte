@@ -28,6 +28,7 @@
   const { session } = stores()
   let quill;
   let editor;
+  let state = article.state;
   let title = article.title;
   let authors = []
   article.author.map(auth => {
@@ -138,7 +139,8 @@
       body: JSON.stringify({
         title: title,
 				extended: quill.root.innerHTML,
-				author: authors
+        author: authors,
+        state: state
       })
     })
     const data = await res.json();
@@ -214,9 +216,19 @@
       <h1>Edit Article</h1>
 			Title:
       <input type="text" bind:value={title} />
-			<br/>
+      <br/>
+      <br/>
+      State:
+      <select bind:value={state}>
+        <option value="draft">Draft</option>
+        <option value="published">Published</option>
+        <option value="archived">Archived</option>
+      </select>
+      <br/>
+      <br/>
       Authors:
       <Select items={contributors} isMulti={true} bind:selectedValue={authors}></Select>
+      <br/>
 			<div class="editor-wrapper">
 				<div bind:this={editor}>
 					{@html article.content.extended}

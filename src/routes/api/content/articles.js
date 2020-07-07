@@ -10,7 +10,7 @@ export async function post(req, res, next) {
         else {
             console.log(verifiedJwt)
             console.log(`POST request received! Title: ${req.body.title}, Content: ${req.body.extended}`)
-            savePost(req.body.title, req.body.extended, req.body.author, function(err, postDoc){
+            savePost(req.body.title, req.body.extended, req.body.author, req.body.state, function(err, postDoc){
                 if(err){
                   console.log(err)
                   res.statusCode = 500

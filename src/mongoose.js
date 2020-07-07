@@ -61,7 +61,7 @@ export async function verifyToken(token, cb) {
 }
 
 //API functions for interacting with Post Model
-export async function savePost(title, extended, author, cb) {
+export async function savePost(title, extended, author, state, cb) {
   let result = await Post.exists({ title: title })
   console.log(result)
   if (result == false ){
@@ -73,7 +73,8 @@ export async function savePost(title, extended, author, cb) {
       content: {
         extended: extended
       },
-      author: authors
+      author: authors,
+      state: state
     })
     post.save(function(err, postDoc) {
       if (err) return cb(err);
@@ -89,7 +90,8 @@ export async function savePost(title, extended, author, cb) {
       content: {
         extended: extended
       },
-      author: authors
+      author: authors,
+      state: state
     }
     Post.findOneAndUpdate({title: title}, {$set: updatedPost}, {new: true},function(err, userDoc){
       if (err) return cb(err);
