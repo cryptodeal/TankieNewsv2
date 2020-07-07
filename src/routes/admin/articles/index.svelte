@@ -1,6 +1,6 @@
 <script context="module">
     export function preload({ params, query }) {
-		return this.fetch(`admin/manage-articles.json`).then(r => r.json()).then(articles => {
+		return this.fetch(`admin/articles.json`).then(r => r.json()).then(articles => {
 			return { articles };
 		});
 	}
@@ -58,8 +58,8 @@
   <div class="row">
     <div class="column1">
         <a href='admin/dashboard'>Dashboard</a>
-        <a href='admin/manage-articles/new'>New Article</a>
-        <a href="admin/manage-articles">Edit Articles</a>
+        <a href='admin/articles/new'>New Article</a>
+        <a href="admin/articles">Edit Articles</a>
     </div>
     <div class="column2">
         <h1>Recent articles</h1>
@@ -69,7 +69,7 @@
                             tell Sapper to load the data for the page as soon as
                             the user hovers over the link or taps it, instead of
                             waiting for the 'click' event -->
-                    <li><a rel='prefetch' href='admin/articles/{article.slug}'>{article.title}</a></li>
+                    <li><a rel='prefetch' href='admin/articles/edit/{article.slug}'>{article.title}</a></li>
                 {/each}
             </ul>
     </div>

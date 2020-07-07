@@ -58,6 +58,7 @@
 </svelte:head>
 
 <h1>{post.title}</h1>
+<h3>By {post.author[0].email}</h3>
 
 <div class='content'>
 	{#if !post.content}

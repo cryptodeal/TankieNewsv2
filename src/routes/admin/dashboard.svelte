@@ -43,8 +43,8 @@
   <div class="row">
     <div class="column1">
       <a href='admin/dashboard'>Dashboard</a>
-      <a href='admin/manage-articles/new'>New Article</a>
-      <a href="admin/manage-articles">Edit Articles</a>
+      <a href='admin/articles/new'>New Article</a>
+      <a href="admin/articles">Edit Articles</a>
     </div>
     <div class="column2">
       <h1>Admin Dashboard</h1>

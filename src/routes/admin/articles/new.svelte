@@ -1,6 +1,6 @@
 <script context="module">
     export function preload({ params, query }) {
-		return this.fetch(`admin/manage-articles/new.json`).then(r => r.json()).then(contributors => {
+		return this.fetch(`admin/articles/new.json`).then(r => r.json()).then(contributors => {
 			return { contributors };
 		});
 	}
@@ -9,8 +9,7 @@
   export let contributors
   import { goto, stores } from '@sapper/app'
   import { onMount } from 'svelte'
-  import MultiSelect from '../../../components/MultiSelect.svelte';
-  //TODO: figure out best way to import css from node module for the editor, which is created onMount
+  import Select from 'svelte-select';
   import 'quill/dist/quill.snow.css'
 
   const { session } = stores()
@@ -123,6 +122,7 @@
       body: JSON.stringify({
         title: title,
         extended: quill.root.innerHTML,
+        author: authors
       })
     })
     const data = await res.json();
@@ -169,8 +169,8 @@
   <div class="row">
     <div class="column1">
       <a href='admin/dashboard'>Dashboard</a>
-      <a href='admin/manage-articles/new'>New Article</a>
-      <a href="admin/manage-articles">Edit Articles</a>
+      <a href='admin/articles/new'>New Article</a>
+      <a href="admin/articles">Edit Articles</a>
     </div>
     <div class="column2">
       <h1>Add an Article</h1>
@@ -178,12 +178,7 @@
       <input type="text" bind:value={title} />
       <br/>
       Authors:
-      <MultiSelect id='authors' bind:value={authors}>
-        <option value={null}>-- Select Author(s) --</option>
-	      {#each contributors as contributor}
-          <option value={contributor.email}>{contributor.email}</option>
-        {/each}
-      </MultiSelect>
+      <Select items={contributors} isMulti={true} bind:selectedValue={authors}></Select>
       <div class="editor-wrapper">
         <div bind:this={editor}/>
       </div>
