@@ -128,6 +128,6 @@ export async function listContributors(cb) {
 
 export async function findArticle(slug, cb) {
   let article = await Post.find({slug: slug}).populate('author')
-  console.log(article)
+  //console.log(article)
   return cb(article)
 }

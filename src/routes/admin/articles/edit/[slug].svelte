@@ -29,13 +29,11 @@
   const { session } = stores()
   let quill;
   let editor;
-  let stateOptions = [{value: 'draft', label: 'Draft'}, {value: 'published', label: 'Published'}, {value: 'archived', label: 'Archived'}]
-  let stateOptions1 = ['draft', 'published', 'archived']
+  let stateOptions = ['draft', 'published', 'archived']
   let state = article.state;
   let title = article.title;
   const today = new Date();
   let start = new Date();
-  let selectedDate;
 	let dateFormat = '#{l}, #{F} #{j}, #{Y}';
   let formattedSelected;
 	let dateChosen = false;
@@ -140,7 +138,7 @@
 
   async function saveArticle() {
     console.log(`here is the inner html: ${quill.root.innerHTML}`)
-    let res = await fetch(`http://localhost:3000/api/content/articles`, {
+    let res = await fetch(`api/content/articles`, {
       method: "POST",
       mode: 'cors',
       credentials: 'include',
@@ -152,7 +150,7 @@
 				extended: quill.root.innerHTML,
         author: authors,
         state: state.value,
-        publishedDate: selectedDate
+        publishedDate: formattedSelected
       })
     })
     const data = await res.json();
@@ -161,7 +159,7 @@
 
   async function deleteArticle() {
     console.log(`here is the inner html: ${quill.root.innerHTML}`)
-    let res = await fetch(`http://localhost:3000/api/content/articles`, {
+    let res = await fetch(`api/content/articles`, {
       method: "DELETE",
       mode: 'cors',
       credentials: 'include',
@@ -188,11 +186,11 @@
   main {
     position: relative;
     background-color: white;
-    margin: 0 auto;
+    margin: 0;
     box-sizing: border-box;
+    max-width: 100%;
   }
   .column1 {
-    height: 100%;
     flex: 15%;
     padding: 10px;
     background-color: #d74e4d;
@@ -211,6 +209,15 @@
   .column1 a:hover {
     color: #ffffff;
   }
+  .custom-button {
+	  display: inline-block;
+	  background: #d74e4d;
+	  color: #eee;
+	  border: 1px solid black;
+	  text-align: center;
+	  padding: 15px 30px;
+	  cursor: pointer;
+	}
 
 </style>
 
@@ -232,27 +239,29 @@
       <br/>
       <br/>
       State:
-      <Select items={stateOptions1} bind:selectedValue={state}></Select>
-      {#if state.value === 'published'}
-        <br/>
-        <br/>
-        Published Date:
-        <Datepicker
-          format={dateFormat}
-          bind:formattedSelected
-          bind:dateChosen
-          bind:selected={selectedDate}
-          buttonBackgroundColor='#d74e4d'
-          buttonTextColor='white'
-          highlightColor='#d74e4d'
-          dayBackgroundColor='#efefef'
-          dayTextColor='#333'
-          dayHighlightedBackgroundColor='#d74e4d'
-          dayHighlightedTextColor='#fff'
-        />
+      <Select items={stateOptions} bind:selectedValue={state} inputStyles="box-sizing: border-box;"></Select>
+      <br/>
+      <br/>
+      {#if state.value == 'published'}
+      Published Date:
+      <br/>
+      <Datepicker
+        format={dateFormat}
+        bind:formattedSelected
+        bind:dateChosen
+        highlightColor='#d74e4d'
+        dayBackgroundColor='#efefef'
+        dayTextColor='#333'
+        dayHighlightedBackgroundColor='#d74e4d'
+        dayHighlightedTextColor='#fff'
+      >
+        <button class='custom-button'>
+				  {#if dateChosen} Chosen: {formattedSelected} {:else} Pick a date {/if}
+			  </button>
+      </Datepicker>
+      <br/>
+      <br/>
       {/if}
-      <br/>
-      <br/>
       Authors:
       <Select items={contributors} isMulti={true} bind:selectedValue={authors}></Select>
       <br/>

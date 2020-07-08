@@ -17,6 +17,8 @@
   let editor
   let title;
   let authors = [];
+  let stateOptions1 = ['draft', 'published', 'archived']
+  let state
 
 	onMount(async() => {
     const { default: Quill } = await import('quill')
@@ -176,6 +178,10 @@
       <h1>Add an Article</h1>
       Title:
       <input type="text" bind:value={title} />
+      <br/>
+      <br/>
+      State:
+      <Select items={stateOptions1} bind:selectedValue={state} inputStyles="box-sizing: border-box;"></Select>
       <br/>
       Authors:
       <Select items={contributors} isMulti={true} bind:selectedValue={authors}></Select>

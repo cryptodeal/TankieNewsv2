@@ -5,7 +5,7 @@
   let password = ''
 
   async function signUp () {
-    await fetch('http://localhost:3000/api/signup', {
+    await fetch('api/signup', {
       method: 'POST',
       mode: 'cors',
       credentials: 'include',
@@ -21,11 +21,14 @@
       alert("Incorrect email or password. Please try again.")
     }
   })
-    window.location.href= 'profile' 
+      window.location.href= 'profile' 
+  }
+  async function clickTest() {
+    alert('click registered!!!!')
   }
 
-    async function login () {
-    await fetch('http://localhost:3000/api/session', {
+  async function login () {
+    await fetch('api/session', {
       method: 'POST',
       mode: 'cors',
       credentials: 'include',
@@ -82,7 +85,7 @@
     <option value="user@example.net">Test User</option>
   </select>
   <input id="password" type="password" bind:value={password} />
-  <button id="login" type="button" disabled={!email} on:click={signUp}>Sign Up</button>
+  <button id="login" type="button" disabled={!email} on:click={clickTest}>Sign Up</button>
   </form>
   {/if}
 </div>
