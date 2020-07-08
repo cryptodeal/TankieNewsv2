@@ -24,12 +24,23 @@
   import { onMount } from 'svelte'
   import Select from 'svelte-select';
   import 'quill/dist/quill.snow.css'
+  import Datepicker from 'svelte-calendar'
 
   const { session } = stores()
   let quill;
   let editor;
+  let stateOptions = [{value: 'draft', label: 'Draft'}, {value: 'published', label: 'Published'}, {value: 'archived', label: 'Archived'}]
+  let stateOptions1 = ['draft', 'published', 'archived']
   let state = article.state;
   let title = article.title;
+  const today = new Date();
+  let start = new Date();
+  let selectedDate;
+	let dateFormat = '#{l}, #{F} #{j}, #{Y}';
+  let formattedSelected;
+	let dateChosen = false;
+	let exampleFormatted = false;
+	let exampleChosen = false;
   let authors = []
   article.author.map(auth => {
     authors.push({value: auth._id, label: auth.email})
@@ -140,7 +151,8 @@
         title: title,
 				extended: quill.root.innerHTML,
         author: authors,
-        state: state
+        state: state.value,
+        publishedDate: selectedDate
       })
     })
     const data = await res.json();
@@ -199,6 +211,7 @@
   .column1 a:hover {
     color: #ffffff;
   }
+
 </style>
 
 <svelte:head>
@@ -219,11 +232,25 @@
       <br/>
       <br/>
       State:
-      <select bind:value={state}>
-        <option value="draft">Draft</option>
-        <option value="published">Published</option>
-        <option value="archived">Archived</option>
-      </select>
+      <Select items={stateOptions1} bind:selectedValue={state}></Select>
+      {#if state.value === 'published'}
+        <br/>
+        <br/>
+        Published Date:
+        <Datepicker
+          format={dateFormat}
+          bind:formattedSelected
+          bind:dateChosen
+          bind:selected={selectedDate}
+          buttonBackgroundColor='#d74e4d'
+          buttonTextColor='white'
+          highlightColor='#d74e4d'
+          dayBackgroundColor='#efefef'
+          dayTextColor='#333'
+          dayHighlightedBackgroundColor='#d74e4d'
+          dayHighlightedTextColor='#fff'
+        />
+      {/if}
       <br/>
       <br/>
       Authors:

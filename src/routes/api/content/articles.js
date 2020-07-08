@@ -9,8 +9,8 @@ export async function post(req, res, next) {
             }
         else {
             console.log(verifiedJwt)
-            console.log(`POST request received! Title: ${req.body.title}, Content: ${req.body.extended}`)
-            savePost(req.body.title, req.body.extended, req.body.author, req.body.state, function(err, postDoc){
+            console.log(`POST request received! Title: ${req.body.title}, Content: ${req.body.extended}, authors: ${req.body.authors}, state: ${req.body.state}, date published: ${req.body.publishedDate}`)
+            savePost(req.body.title, req.body.extended, req.body.author, req.body.state, req.body.publishedDate, function(err, postDoc){
                 if(err){
                   console.log(err)
                   res.statusCode = 500

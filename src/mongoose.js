@@ -61,20 +61,23 @@ export async function verifyToken(token, cb) {
 }
 
 //API functions for interacting with Post Model
-export async function savePost(title, extended, author, state, cb) {
+export async function savePost(title, extended, author, state, date, cb) {
   let result = await Post.exists({ title: title })
   console.log(result)
   if (result == false ){
-    console.log(`inside savePost! title: ${title}, content extended: ${extended}, authors: ${author[0].value}`)
+    //console.log(`inside savePost! title: ${title}, content extended: ${extended}, authors: ${author[0].value}, state: ${state}, date published: ${publishedDate}`)
     let authors = [];
-    author.map(auth => authors.push(auth.value))
+    if(author !== undefined){
+      author.map(auth => authors.push(auth.value))
+    }
     let post = new Post ({
       title: title,
       content: {
         extended: extended
       },
       author: authors,
-      state: state
+      state: state,
+      publishedDate: date
     })
     post.save(function(err, postDoc) {
       if (err) return cb(err);
@@ -83,7 +86,9 @@ export async function savePost(title, extended, author, state, cb) {
     });
   } else {
     let authors = [];
-    author.map(auth => authors.push(auth.value))
+    if(author !== undefined){
+      author.map(auth => authors.push(auth.value))
+    }
     //console.log(`inside savePost! title: ${title}, content extended: ${extended}, authors: ${JSON.stringify(author)}`)
     let updatedPost = {
       title: title,
@@ -91,7 +96,8 @@ export async function savePost(title, extended, author, state, cb) {
         extended: extended
       },
       author: authors,
-      state: state
+      state: state,
+      publishedDate: date
     }
     Post.findOneAndUpdate({title: title}, {$set: updatedPost}, {new: true},function(err, userDoc){
       if (err) return cb(err);
