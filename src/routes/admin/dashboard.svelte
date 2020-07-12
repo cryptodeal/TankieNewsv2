@@ -23,21 +23,18 @@
     height: 100%;
     flex: 15%;
     padding: 10px;
-    background-color: #d74e4d;
-  }
-  .column1 a {
-    padding: 6px 8px 6px 16px;
-    text-decoration: none;
-    font-size: 15px;
-    color: #363636;
-    display: inherit;
   }
   .column2 {
     flex: 85%;
     padding: 10px;
   }
-  .column1 a:hover {
-    color: #ffffff;
+  .openbtn {
+    font-size: 13px;
+    cursor: pointer;
+    background-color: #d74e4d;
+    color: white;
+    padding: 10px 15px;
+    border: none;
   }
   .side {
     display: grid;
@@ -47,14 +44,11 @@
 
 <main>
   <div class="row">
-  <div class='side'>
-    <Sidebar bind:show={sidebar_show}/>
-  </div>
+    <div class='side'>
+      <Sidebar bind:show={sidebar_show}/>
+    </div>
     <div class="column1">
-      <button on:click={() => sidebar_show = !sidebar_show}>Toggle Sidebar</button>
-      <a href='admin/dashboard'>Dashboard</a>
-      <a href='admin/articles/new'>New Article</a>
-      <a href="admin/articles">Edit Articles</a>
+      <button class="openbtn" on:click={() => sidebar_show = !sidebar_show}>☰ Open Sidebar</button>
     </div>
     <div class="column2">
       <h1>Admin Dashboard</h1>

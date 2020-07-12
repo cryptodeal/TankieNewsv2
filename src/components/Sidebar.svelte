@@ -10,7 +10,7 @@ nav {
   position: fixed;
   top: inherit;
   left: 0;
-  height: 100%;
+  height: auto;
   border-right: 1px solid #aaa;
   overflow-y: auto;
 	width: 10rem;

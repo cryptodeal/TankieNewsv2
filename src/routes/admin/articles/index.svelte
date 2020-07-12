@@ -8,46 +8,46 @@
 
 <script>
     export let articles;
+    import Sidebar from '../../../components/Sidebar.svelte'
+    import { goto, stores } from '@sapper/app'
+    let sidebar_show = false;
 </script>
 
 <style>
 	ul {
 		margin: 0 0 1em 0;
 		line-height: 1.5;
-    }
-    * {
-        box-sizing: border-box;
-    }
+  }
+  * {
+      box-sizing: border-box;
+  }
 
-    .row {
-        display: flex;
-    }
-    main {
-        position: relative;
-        background-color: white;
-        margin: 0 auto;
-        box-sizing: border-box;
-    }
-    .column1 {
-        padding: 10px;
-        height: 100%;
-        flex: 15%;
-        background-color: #d74e4d;
-    }
-    .column1 a {
-        padding: 6px 8px 6px 16px;
-        text-decoration: none;
-        font-size: 15px;
-        color: #363636;
-        display: inherit;
-    }
-    .column2 {
-        flex: 85%;
-        padding: 10px;
-    }
-    .column1 a:hover {
-        color: #ffffff;
-    }
+  .row {
+      display: flex;
+  }
+  main {
+      position: relative;
+      background-color: white;
+      margin: 0 auto;
+      box-sizing: border-box;
+  }
+  .column1 {
+      padding: 10px;
+      height: 100%;
+      flex: 15%;
+  }
+  .column2 {
+      flex: 85%;
+      padding: 10px;
+  }
+  .openbtn {
+    font-size: 13px;
+    cursor: pointer;
+    background-color: #d74e4d;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+  }
 </style>
 
 <svelte:head>
@@ -56,10 +56,11 @@
 
 <main>
   <div class="row">
+    <div class='side'>
+      <Sidebar bind:show={sidebar_show}/>
+    </div>
     <div class="column1">
-        <a href='admin/dashboard'>Dashboard</a>
-        <a href='admin/articles/new'>New Article</a>
-        <a href="admin/articles">Edit Articles</a>
+      <button class="openbtn" on:click={() => sidebar_show = !sidebar_show}>☰ Open Sidebar</button>
     </div>
     <div class="column2">
         <h1>Recent articles</h1>

@@ -11,8 +11,10 @@
   import { onMount } from 'svelte'
   import Select from 'svelte-select';
   import 'quill/dist/quill.snow.css'
-
+  import Sidebar from '../../../components/Sidebar.svelte'
+  
   const { session } = stores()
+  let sidebar_show = false;
   let quill;
   let editor
   let title;
@@ -149,30 +151,29 @@
     height: 100%;
     flex: 15%;
     padding: 10px;
-    background-color: #d74e4d;
   }
-  .column1 a {
-    padding: 6px 8px 6px 16px;
-    text-decoration: none;
-    font-size: 15px;
-    color: #363636;
-    display: inherit;
+  .openbtn {
+    font-size: 13px;
+    cursor: pointer;
+    background-color: #d74e4d;
+    color: white;
+    padding: 10px 15px;
+    border: none;
   }
   .column2 {
     flex: 85%;
     padding: 10px;
   }
-  .column1 a:hover {
-    color: #ffffff;
-  }
+
 </style>
 
 <main>
   <div class="row">
+    <div class='side'>
+      <Sidebar bind:show={sidebar_show}/>
+    </div>
     <div class="column1">
-      <a href='admin/dashboard'>Dashboard</a>
-      <a href='admin/articles/new'>New Article</a>
-      <a href="admin/articles">Edit Articles</a>
+      <button class="openbtn" on:click={() => sidebar_show = !sidebar_show}>☰ Open Sidebar</button>
     </div>
     <div class="column2">
       <h1>Add an Article</h1>
