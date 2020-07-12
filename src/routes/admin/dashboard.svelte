@@ -1,5 +1,7 @@
 <script>
   import { goto, stores } from '@sapper/app'
+  import Sidebar from '../../components/Sidebar.svelte'
+  let sidebar_show = false;
   //TODO: figure out best way to import css from node module for the editor, which is created onMount
   const { session } = stores()
 </script>
@@ -37,11 +39,19 @@
   .column1 a:hover {
     color: #ffffff;
   }
+  .side {
+    display: grid;
+		grid-template-rows: 100vh;
+  }
 </style>
 
 <main>
   <div class="row">
+  <div class='side'>
+    <Sidebar bind:show={sidebar_show}/>
+  </div>
     <div class="column1">
+      <button on:click={() => sidebar_show = !sidebar_show}>Toggle Sidebar</button>
       <a href='admin/dashboard'>Dashboard</a>
       <a href='admin/articles/new'>New Article</a>
       <a href="admin/articles">Edit Articles</a>
