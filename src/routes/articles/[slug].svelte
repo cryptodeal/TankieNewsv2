@@ -58,12 +58,13 @@
 </svelte:head>
 
 <h1>{post.title}</h1>
-<h3>By {post.author[0].email}</h3>
+{#if post.author.length}
+  <h3>By {post.author[0].email}</h3>
+{/if}
 
 <div class='content'>
 	{#if !post.content}
 		<p>No post data</p>
-		
 	{:else}
 		{@html post.content.extended}
 	{/if}
