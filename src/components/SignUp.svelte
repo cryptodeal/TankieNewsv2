@@ -1,8 +1,8 @@
 <script>
-  let password;
   let email;
-  async function login () {
-    await fetch('api/session', {
+  let password;
+  async function signUp () {
+    await fetch('api/signup', {
       method: 'POST',
       mode: 'cors',
       credentials: 'include',
@@ -18,12 +18,11 @@
       alert("Incorrect email or password. Please try again.")
     }
   })
-    window.location.href= 'profile' 
+      window.location.href= 'profile' 
   }
-
 </script>
 <form>
-  <p>Login</p>
+  <p>Sign Up</p>
   <select bind:value={email}>
     <option value={null}>-- Select User Type --</option>
     <option value="admin@example.com">Test Admin</option>
@@ -32,6 +31,6 @@
     <option value="subscriber@example.net">Test Subscriber</option>
     <option value="user@example.net">Test User</option>
   </select>
-  <input id="password" type="password" bind:value={password} />  
-  <button id='login' type='button' disabled={!email || !password} on:click={login}>Login</button>
-</form>
+  <input id="password" type="password" bind:value={password} />
+  <button id="login" type="button" disabled={!email} on:click={signUp}>Sign Up</button>
+  </form>
