@@ -1,5 +1,5 @@
 // posts from './_posts.js';
-import { findArticle } from '../../../../mongoose'
+import { findArticle, listCategories, listContributors } from '../../../../mongoose'
 
 export function get(req, res, next) {
 	const { slug } = req.params;

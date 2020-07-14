@@ -10,6 +10,7 @@
   import { goto, stores } from '@sapper/app'
   import { onMount } from 'svelte'
   import Select from 'svelte-select';
+  import Grid from 'svelte-grid-responsive'
   import 'quill/dist/quill.snow.css'
   import Sidebar from '../../../components/Sidebar.svelte'
   
@@ -19,7 +20,7 @@
   let editor
   let title;
   let authors = [];
-  let stateOptions1 = ['draft', 'published', 'archived']
+  let stateOptions = ['draft', 'published', 'archived']
   let state
 
 	onMount(async() => {
@@ -116,7 +117,7 @@
 
   async function saveArticle() {
     console.log(`here is the inner html: ${quill.root.innerHTML}`)
-    let res = await fetch(`http://localhost:3000/api/content/articles`, {
+    let res = await fetch(`api/content/articles`, {
       method: "POST",
       mode: 'cors',
       credentials: 'include',
@@ -159,6 +160,20 @@
     color: white;
     padding: 10px 15px;
     border: none;
+    border-radius: 2px;
+  }
+  .savebtn {
+    padding: 5px;
+    font-size: 13px;
+    cursor: pointer;
+    background-color: #2f4fff;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 2px;
+  }
+  .savebtn:hover {
+    background-color: #0f33ff;
   }
   .column2 {
     flex: 85%;
@@ -177,19 +192,45 @@
     </div>
     <div class="column2">
       <h1>Add an Article</h1>
-      Title:
-      <input type="text" bind:value={title} />
+      <Grid container gutter={12}>
+        <Grid xs={12} md={2} lg={1}>
+          Title:
+        </Grid>
+        <Grid xs={12} md={10} lg={11}>
+          <input type="text" bind:value={title} />
+        </Grid>
+      </Grid>
       <br/>
+      <Grid container gutter={12}>
+        <Grid xs={12} md={2} lg={1}>
+          State:
+        </Grid>
+        <Grid xs={12} md={10} lg={11}>
+          <Select items={stateOptions} bind:selectedValue={state} inputStyles="box-sizing: border-box;"></Select>
+        </Grid>
+      </Grid>
       <br/>
-      State:
-      <Select items={stateOptions1} bind:selectedValue={state} inputStyles="box-sizing: border-box;"></Select>
+      <Grid container gutter={12}>
+        <Grid xs={12} md={2} lg={1}>
+          Authors:
+        </Grid>
+        <Grid xs={12} md={10} lg={11}>
+          <Select items={contributors} isMulti={true} bind:selectedValue={authors}></Select>
+        </Grid>
+      </Grid>
       <br/>
-      Authors:
-      <Select items={contributors} isMulti={true} bind:selectedValue={authors}></Select>
-      <div class="editor-wrapper">
-        <div bind:this={editor}/>
-      </div>
-      <button on:click|preventDefault={saveArticle}>Save</button>
+      <Grid container gutter={12}>
+        <Grid xs={12} md={2} lg={1}>
+          Content Extended:
+        </Grid>
+        <Grid xs={12} md={10} lg={11}>
+          <div class="editor-wrapper">
+            <div bind:this={editor}/>
+          </div>
+          <br/>
+          <button class='savebtn' on:click|preventDefault={saveArticle}>Save</button>
+        </Grid>
+      </Grid>
     </div>
   </div>
 </main>

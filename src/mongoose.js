@@ -3,6 +3,7 @@ require('dotenv').config();
 const nJwt = require('njwt');
 import User from '@models/User';
 import Post from '@models/Post';
+import Category from '@models/Category'
 import signingKey from './server'
 
 mongoose.connect(process.env.MONGOOSE_URI, {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false});
@@ -79,7 +80,7 @@ export async function savePost(title, extended, author, state, date, cb) {
       state: state,
       publishedDate: date
     })
-    post.save(function(err, postDoc) {
+    post.save(async function(err, postDoc) {
       if (err) return cb(err);
       console.log(postDoc);
       return cb(null, postDoc);
@@ -106,6 +107,16 @@ export async function savePost(title, extended, author, state, date, cb) {
   }
 }
 
+export async function initArticle(title, cb){
+  let post = new Post ({
+    title: title,
+  })
+  post.save(async function(err, postDoc) {
+    if (err) return cb(err);
+    console.log(postDoc);
+    return cb(null, postDoc);
+  });
+}
 export async function deleteArticle(title, cb){
   Post.findOneAndDelete({title: title}, function(err, deleted){
     if(err) return cb(err);
@@ -130,4 +141,30 @@ export async function findArticle(slug, cb) {
   let article = await Post.find({slug: slug}).populate('author')
   //console.log(article)
   return cb(article)
+}
+
+export async function listCategories(cb) {
+  //add .populate('author')
+  //add .select('title, slug, author')
+  let categories = await Category.find({});
+  return cb(categories)
+}
+
+export async function addCategory(name, cb) {
+  let result = await Category.exists({ name: name })
+  console.log(result)
+  if (result == false ){
+    //console.log(`inside savePost! title: ${title}, content extended: ${extended}, authors: ${author[0].value}, state: ${state}, date published: ${publishedDate}`)
+    let category = new Category ({
+      name: name
+    })
+    category.save(async function(err, catDoc) {
+      if (err) return cb(err);
+      console.log(catDoc);
+      return cb(null, catDoc);
+    });
+  } else {
+    if (err) return cb(err)
+    return cb(null, null)
+  }
 }

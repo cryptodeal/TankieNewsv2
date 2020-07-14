@@ -9,7 +9,11 @@
 			const res2 = await this.fetch(`admin/articles/new.json`)
 			const contributors = await res2.json();
 			if (res2.status === 200){
-				return { article: data[0], contributors: contributors };
+        const res3 = await this.fetch(`api/content/categories`)
+        const categories = await res3.json()
+        if (res3.status === 200){
+          return { article: data[0], contributors: contributors, categories: categories };
+        }
 			}
 		} else {
 			this.error(res.status, data.message);
@@ -19,10 +23,13 @@
 
 <script>
 	export let article;
-	export let contributors;
+  export let contributors;
+  export let categories;
 	import { goto, stores } from '@sapper/app'
   import { onMount } from 'svelte'
   import Select from 'svelte-select';
+  import Textarea from "../../../../components/Textarea.svelte";
+  import Grid from 'svelte-grid-responsive'
   import 'quill/dist/quill.snow.css'
   import Datepicker from 'svelte-calendar'
   import Sidebar from '../../../../components/Sidebar.svelte'
@@ -30,6 +37,9 @@
   const { session } = stores()
   let sidebar_show = false;
   let quill;
+  const entry = {
+    brief: ''
+  }
   let editor;
   let stateOptions = ['draft', 'published', 'archived']
   let state = article.state;
@@ -42,8 +52,12 @@
 	let exampleFormatted = false;
 	let exampleChosen = false;
   let authors = []
+  let selectedCat = []
   article.author.map(auth => {
     authors.push({value: auth._id, label: auth.email})
+  })
+  article.categories.map(cat => {
+    selectCat.push({value: cat._id, label: cat.name})
   })
 
 	onMount(async() => {
@@ -193,11 +207,11 @@
     max-width: 100%;
   }
   .column1 {
-    flex: 15%;
+    flex: 13%;
     padding: 10px;
   }
   .column2 {
-    flex: 85%;
+    flex: 87%;
     padding: 10px;
   }
   .openbtn {
@@ -217,7 +231,34 @@
 	  padding: 15px 30px;
 	  cursor: pointer;
 	}
-
+  .savebtn {
+    padding: 5px;
+    font-size: 13px;
+    cursor: pointer;
+    background-color: #2f4fff;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 2px;
+  }
+  .deletebtn{
+    float: right;
+    font-size: 13px;
+    cursor: pointer;
+    background-color: #d74e4d;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 2px;
+  }
+  .savebtn:hover {
+    background-color: #0f33ff;
+  }
+	form {
+		display: grid;
+  	max-width: 80%;
+  	gap: 10px;
+	}
 </style>
 
 <svelte:head>
@@ -234,44 +275,90 @@
     </div>
     <div class="column2">
       <h1>Edit Article</h1>
-			Title:
-      <input type="text" bind:value={title} />
+			<Grid container gutter={12}>
+        <Grid xs={12} md={2} lg={1}>
+          Title:
+        </Grid>
+        <Grid xs={12} md={10} lg={11}>
+          <input type="text" bind:value={title} />
+        </Grid>
+      </Grid>
       <br/>
-      <br/>
-      State:
-      <Select items={stateOptions} bind:selectedValue={state} inputStyles="box-sizing: border-box;"></Select>
-      <br/>
+      <Grid container gutter={12}>
+        <Grid xs={12} md={2} lg={1}>
+          State:
+        </Grid>
+        <Grid xs={12} md={10} lg={11}>
+          <Select items={stateOptions} bind:selectedValue={state} inputStyles="box-sizing: border-box;"></Select>
+        </Grid>
+      </Grid>
       <br/>
       {#if state.value == 'published'}
-      Published Date:
-      <br/>
-      <Datepicker
-        format={dateFormat}
-        bind:formattedSelected
-        bind:dateChosen
-        highlightColor='#d74e4d'
-        dayBackgroundColor='#efefef'
-        dayTextColor='#333'
-        dayHighlightedBackgroundColor='#d74e4d'
-        dayHighlightedTextColor='#fff'
-      >
-        <button class='custom-button'>
-				  {#if dateChosen} Chosen: {formattedSelected} {:else} Pick a date {/if}
-			  </button>
-      </Datepicker>
-      <br/>
-      <br/>
+        <Grid container gutter={12}>
+          <Grid xs={12} md={2} lg={1}>
+            Published Date:
+          </Grid>
+          <Grid xs={12} md={10} lg={11}>
+            <Datepicker
+            format={dateFormat}
+            bind:formattedSelected
+            bind:dateChosen
+            highlightColor='#d74e4d'
+            dayBackgroundColor='#efefef'
+            dayTextColor='#333'
+            dayHighlightedBackgroundColor='#d74e4d'
+            dayHighlightedTextColor='#fff'
+            >
+              <button class='custom-button'>
+                {#if dateChosen} Chosen: {formattedSelected} {:else} Pick a date {/if}
+              </button>
+            </Datepicker>
+          </Grid>
+        </Grid>
+        <br/>
       {/if}
-      Authors:
-      <Select items={contributors} isMulti={true} bind:selectedValue={authors}></Select>
+      <Grid container gutter={12}>
+        <Grid xs={12} md={2} lg={1}>
+          Authors:
+        </Grid>
+        <Grid xs={12} md={10} lg={11}>
+          <Select items={contributors} isMulti={true} bind:selectedValue={authors}></Select>
+        </Grid>
+      </Grid>
       <br/>
-			<div class="editor-wrapper">
-				<div bind:this={editor}>
-					{@html article.content.extended}
-				</div>
-			</div>
-			<button on:click|preventDefault={saveArticle}>Save</button>
-      <button on:click={deleteArticle}>Delete</button>
+      <Grid container gutter={12}>
+        <Grid xs={12} md={2} lg={1}>
+          Categories:
+        </Grid>
+        <Grid xs={12} md={10} lg={11}>
+          <Select items={categories} isMulti={true} bind:selectedValue={selectedCat}></Select>
+        </Grid>
+      </Grid>
+      <br/>
+      <Grid container gutter={12}>
+        <Grid xs={12} md={2} lg={1}>
+          Content Brief:
+        </Grid>
+        <Grid xs={12} md={10} lg={11}>
+          <form>
+            <Textarea name={'Content Brief'} bind:value={entry.brief} />
+          </form>
+        </Grid>
+      </Grid>
+      <br/>
+			<Grid container gutter={12}>
+        <Grid xs={12} md={2} lg={1}>
+          Content Extended:
+        </Grid>
+        <Grid xs={12} md={10} lg={11}>
+          <div class="editor-wrapper">
+            <div bind:this={editor}/>
+          </div>
+          <br/>
+          <button class='savebtn' on:click|preventDefault={saveArticle}>Save</button>
+          <button class='deletebtn' on:click={deleteArticle}>Delete</button>
+        </Grid>
+      </Grid>
     </div>
   </div>
 </main>

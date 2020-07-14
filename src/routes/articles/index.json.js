@@ -6,7 +6,8 @@ export function get(req, res) {
 		let content = JSON.stringify(posts.map(post => ({ 
 			title: post.title,
 			slug: post.slug
-		})));
+    })));
+    console.log(content)
 		res.writeHead(200, {
 			'Content-Type': 'application/json'
 		});

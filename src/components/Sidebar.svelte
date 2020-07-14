@@ -44,9 +44,10 @@ nav {
   <nav transition:fly={{x: -250, opacity: 1}}>
     <div class='tabs'>
       <button class='closebtn' on:click={() => show = !show}>x</button>
-      <a href='admin/dashboard'>Dashboard</a>
-      <a href='admin/articles/new'>New Article</a>
-      <a href="admin/articles">Edit Articles</a>
+      <a href='admin/dashboard' on:click={() => show = !show}>Dashboard</a>
+      <a rel='prefetch' href='admin/articles/new' on:click={() => show = !show}>New Article</a>
+      <a rel='prefetch' href="admin/articles" on:click={() => show = !show}>Edit Articles</a>
+      <a rel='prefetch' href="admin/categories" on:click={() => show = !show}>Categories</a>
     </div>
   </nav>
 {/if}

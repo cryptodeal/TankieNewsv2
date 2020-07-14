@@ -1,29 +1,27 @@
 <script context="module">
     export function preload({ params, query }) {
-		return this.fetch(`admin/articles.json`).then(r => r.json()).then(articles => {
-			return { articles };
+		return this.fetch(`admin/categories.json`).then(r => r.json()).then(categories => {
+			return { categories };
 		});
 	}
 </script>
-
 <script>
-    export let articles;
+    export let categories;
     import Sidebar from '../../../components/Sidebar.svelte'
-    import ArticleModal from '../../../components/ArticleModal.svelte'
+    import CatModal from '../../../components/CatModal.svelte';
     import { goto, stores } from '@sapper/app'
     let sidebar_show = false;
-    let artmodal_show = false;
+    let catmodal_show = false;
 </script>
 
 <style>
-	ul {
-		margin: 0 0 1em 0;
-		line-height: 1.5;
-  }
   * {
       box-sizing: border-box;
   }
-
+  ul {
+		margin: 0 0 1em 0;
+		line-height: 1.5;
+  }
   .row {
       display: flex;
   }
@@ -52,13 +50,10 @@
   }
 </style>
 
-<svelte:head>
-	<title>Blog</title>
-</svelte:head>
 
 <main>
   <div class="row">
-    <ArticleModal bind:show={artmodal_show} />
+    <CatModal bind:show={catmodal_show} />
     <div class='side'>
       <Sidebar bind:show={sidebar_show}/>
     </div>
@@ -66,17 +61,22 @@
       <button class="openbtn" on:click={() => sidebar_show = !sidebar_show}>☰ Open Sidebar</button>
     </div>
     <div class="column2">
-        <h1>Recent articles</h1>
+        <h1>Article Categories</h1>
             <ul>
-              <button class="addArtBtn" on:click={() => artmodal_show = !artmodal_show}>New Article</button>
-              {#each articles as article}
-                  <!-- we're using the non-standard `rel=prefetch` attribute to
-                          tell Sapper to load the data for the page as soon as
-                          the user hovers over the link or taps it, instead of
-                          waiting for the 'click' event -->
-                  <li><a rel='prefetch' href='admin/articles/edit/{article.slug}'>{article.title}</a></li>
-              {/each}
+              <button class="addCatBtn" on:click={() => catmodal_show = !catmodal_show}>New Category</button>
+              {#if categories.length}
+                {#each categories as category}
+                    <!-- we're using the non-standard `rel=prefetch` attribute to
+                            tell Sapper to load the data for the page as soon as
+                            the user hovers over the link or taps it, instead of
+                            waiting for the 'click' event -->
+                    <li>{category.name}</li>
+                {/each}
+              {:else}
+                <p>No categories to display</p>
+              {/if}
             </ul>
     </div>
   </div>
 </main>
+
