@@ -34,6 +34,7 @@ async function initArticle() {
       })
     })
     const data = await res.json();
+    window.location.href= `admin/articles/edit/${data.slug}` 
 		console.log(data)
   };
 
