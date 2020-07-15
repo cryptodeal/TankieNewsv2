@@ -3,21 +3,12 @@
 		// the `slug` parameter is available because
 		// this file is called [slug].svelte
 		const res = await this.fetch(`admin/articles/edit/${params.slug}.json`);
-		const data = await res.json();
-
-		if (res.status === 200){
-			const res2 = await this.fetch(`admin/articles/new.json`)
-			const contributors = await res2.json();
-			if (res2.status === 200){
-        const res3 = await this.fetch(`api/content/categories`)
-        const categories = await res3.json()
-        if (res3.status === 200){
-          return { article: data[0], contributors: contributors, categories: categories };
-        }
-			}
-		} else {
-			this.error(res.status, data.message);
-		}
+    const data = await res.json();
+    if(data.message){
+      console.log(data.message)
+    } else {
+       return { article: data.article[0], contributors: data.contributors, categories: data.categories };
+    }
 	}
 </script>
 

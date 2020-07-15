@@ -23,9 +23,6 @@
   })
       window.location.href= 'profile' 
   }
-  async function clickTest() {
-    alert('click registered!!!!')
-  }
 
   async function login () {
     await fetch('api/session', {
@@ -85,7 +82,7 @@
     <option value="user@example.net">Test User</option>
   </select>
   <input id="password" type="password" bind:value={password} />
-  <button id="login" type="button" disabled={!email} on:click={clickTest}>Sign Up</button>
+  <button id="login" type="button" disabled={!email} on:click={signUp}>Sign Up</button>
   </form>
   {/if}
 </div>

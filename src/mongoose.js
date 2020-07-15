@@ -133,9 +133,14 @@ export async function listArticles(cb) {
 
 export async function listContributors(cb) {
   let contributors = await User.find().select('email').lean();
-  console.log(contributors)
+  //console.log(contributors)
   return cb(contributors)
 }
+
+export function listContributorsPromise(){
+  return User.find().select('email').lean().exec();
+}
+
 
 export async function findArticle(slug, cb) {
   let article = await Post.find({slug: slug}).populate('author')
@@ -143,11 +148,19 @@ export async function findArticle(slug, cb) {
   return cb(article)
 }
 
+export function findArticlePromise(slug){
+  return Post.find({slug: slug}).populate('author').exec();
+}
+
 export async function listCategories(cb) {
   //add .populate('author')
   //add .select('title, slug, author')
   let categories = await Category.find({});
   return cb(categories)
+}
+
+export function listCategoriesPromise(){
+  return Category.find({}).exec()
 }
 
 export async function addCategory(name, cb) {
