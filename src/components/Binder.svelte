@@ -15,11 +15,14 @@
 	span.active {
 		border-bottom: 1px solid #d74e4d;
 		cursor: auto;
-	}
+  }
+  .titles {
+    text-align: center;
+  }
 </style>
 
 <div class=binder>
-	<div cass=titles>
+	<div class=titles>
 		{#each tabs as {name}, i}
 			<span 
 				class="{activeTab === i ? 'active' : ''}"

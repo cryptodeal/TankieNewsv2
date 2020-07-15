@@ -1,10 +1,8 @@
 <script>
   import { goto, stores } from '@sapper/app'
-  import UserModal from '../components/UserModal.svelte'
   const { session } = stores()
   let email = null
   let password = ''
-  let usermodal_show = false;
 
   async function signUp () {
     await fetch('api/signup', {
@@ -62,8 +60,6 @@
   {#if $session.authenticated}
   <p>You are logged in as {$session.profile.name}</p>
   {:else}
-  <UserModal bind:show={usermodal_show} />
-  <button class="userModalBtn" on:click={() => usermodal_show = !usermodal_show}>Login/Signup</button>
   <form>
   <p>Login</p>
   <select bind:value={email}>

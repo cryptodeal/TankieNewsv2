@@ -5,7 +5,7 @@
   import { guard } from "@beyonk/sapper-rbac";
   import { tick } from "svelte";
   import { stores, goto } from "@sapper/app";
-
+  
   const { page, session } = stores();
   const image = Image;
   const options = {

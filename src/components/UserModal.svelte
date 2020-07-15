@@ -13,12 +13,12 @@
 <script>
   import { fade } from 'svelte/transition';
   import Login from './Login.svelte'
-  import SignUp from './SignUp.svelte'
+  import Register from './Register.svelte'
   import Binder from './Binder.svelte'
     
   const tabs = [
     { name: 'Login', component: Login },
-    { name: 'Sign Up', component: SignUp },
+    { name: 'Register', component: Register },
   ]
   //let name;
 
@@ -46,7 +46,7 @@
 .modal-container {
   position: relative;
   background-color: #ffffff;
-  width: 90vw;
+  width: 50vw;
   margin: 1rem auto 0.2rem;
   box-shadow: 0 3px 10px #555;
 }

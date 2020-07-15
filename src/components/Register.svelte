@@ -1,7 +1,7 @@
 <script>
   let email;
   let password;
-  async function signUp () {
+  async function register () {
     await fetch('api/signup', {
       method: 'POST',
       mode: 'cors',
@@ -21,8 +21,8 @@
       window.location.href= 'profile' 
   }
 </script>
+<br/>
 <form>
-  <p>Sign Up</p>
   <select bind:value={email}>
     <option value={null}>-- Select User Type --</option>
     <option value="admin@example.com">Test Admin</option>
@@ -32,5 +32,5 @@
     <option value="user@example.net">Test User</option>
   </select>
   <input id="password" type="password" bind:value={password} />
-  <button id="login" type="button" disabled={!email} on:click={signUp}>Sign Up</button>
+  <button id="login" type="button" disabled={!email} on:click={register}>Register</button>
   </form>

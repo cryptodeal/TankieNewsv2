@@ -22,8 +22,8 @@
   }
 
 </script>
+<br/>
 <form>
-  <p>Login</p>
   <select bind:value={email}>
     <option value={null}>-- Select User Type --</option>
     <option value="admin@example.com">Test Admin</option>
