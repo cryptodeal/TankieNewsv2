@@ -100,7 +100,10 @@ export async function saveArticle(title, extended, author, state, date){
 
 export function initArticle(title){
   let post = new Post({
-    title: title
+    title: title,
+    content: {
+      extended: ''
+    }
   })
   return post.save()
 }
