@@ -1,21 +1,28 @@
 // posts from './_posts.js';
-import { findArticle, findArticlePromise, listCategoriesPromise, listContributorsPromise } from '../../../../mongoose'
+import { findArticle, listCategories, listContributors } from '../../../../mongoose'
 
 export async function get(req, res, next) {
 	const { slug } = req.params;
   console.log(`fetching article...`);
-  let contributors = await listContributorsPromise()
-  let categories = await listCategoriesPromise()
-  let article = await findArticlePromise(slug)
-  await console.log([article, categories, contributors])
+  let contributors = await listContributors().catch(console.error)
+  let contFormatted = contributors.map(contributor => ({
+    value: contributor._id,
+    label: contributor.email
+  }));
+  let categories = await listCategories().catch(console.error)
+  let catFormatted = categories.map(category => ({ 
+    value: category._id,
+    label: category.name
+  }));
+  let article = await findArticle(slug).catch(console.error)
   if(article.length){
     res.writeHead(200, {
       'Content-Type': 'application/json'
     });
     let content = {
       article: article,
-      categories: categories,
-      contributors: contributors
+      categories: catFormatted,
+      contributors: contFormatted
     }
     res.end(JSON.stringify(content))
   } else {

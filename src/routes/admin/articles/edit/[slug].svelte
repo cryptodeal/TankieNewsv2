@@ -177,8 +177,7 @@
         title: title
       })
     })
-    const data = await res.json();
-		console.log(data)
+    window.location.href= `admin/articles` 
   };
 </script>
 
@@ -343,7 +342,9 @@
         </Grid>
         <Grid xs={12} md={10} lg={11}>
           <div class="editor-wrapper">
-            <div bind:this={editor}/>
+            <div bind:this={editor}>
+              {@html article.content.extended}
+            </div>
           </div>
           <br/>
           <button class='savebtn' on:click|preventDefault={saveArticle}>Save</button>

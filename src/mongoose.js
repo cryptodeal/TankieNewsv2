@@ -61,17 +61,15 @@ export async function verifyToken(token, cb) {
   });
 }
 
-//API functions for interacting with Post Model
-export async function savePost(title, extended, author, state, date, cb) {
+export async function saveArticle(title, extended, author, state, date){
   let result = await Post.exists({ title: title })
-  console.log(result)
   if (result == false ){
     //console.log(`inside savePost! title: ${title}, content extended: ${extended}, authors: ${author[0].value}, state: ${state}, date published: ${publishedDate}`)
     let authors = [];
     if(author !== undefined){
       author.map(auth => authors.push(auth.value))
     }
-    let post = new Post ({
+    let article = new Post ({
       title: title,
       content: {
         extended: extended
@@ -80,18 +78,14 @@ export async function savePost(title, extended, author, state, date, cb) {
       state: state,
       publishedDate: date
     })
-    post.save(async function(err, postDoc) {
-      if (err) return cb(err);
-      console.log(postDoc);
-      return cb(null, postDoc);
-    });
+    return article.save()
   } else {
     let authors = [];
     if(author !== undefined){
       author.map(auth => authors.push(auth.value))
     }
     //console.log(`inside savePost! title: ${title}, content extended: ${extended}, authors: ${JSON.stringify(author)}`)
-    let updatedPost = {
+    let updatedArticle = {
       title: title,
       content: {
         extended: extended
@@ -100,84 +94,46 @@ export async function savePost(title, extended, author, state, date, cb) {
       state: state,
       publishedDate: date
     }
-    Post.findOneAndUpdate({title: title}, {$set: updatedPost}, {new: true},function(err, userDoc){
-      if (err) return cb(err);
-      return cb(null, userDoc);
-    });
+    return Post.findOneAndUpdate({title: title}, {$set: updatedArticle}, {new: true}).exec()
   }
 }
 
-export async function initArticle(title, cb){
-  let post = new Post ({
-    title: title,
+export function initArticle(title){
+  let post = new Post({
+    title: title
   })
-  post.save(async function(err, postDoc) {
-    if (err) return cb(err);
-    console.log(postDoc);
-    return cb(null, postDoc);
-  });
-}
-export async function deleteArticle(title, cb){
-  Post.findOneAndDelete({title: title}, function(err, deleted){
-    if(err) return cb(err);
-    return cb(null, deleted)
-  })
+  return post.save()
 }
 
-export async function listArticles(cb) {
-  //add .populate('author')
-  //add .select('title, slug, author')
-  let articles = await Post.find({}).lean();
-  return cb(articles)
+export function deleteArticle(title){
+  return Post.findOneAndDelete({title: title})
 }
 
-export async function listContributors(cb) {
-  let contributors = await User.find().select('email').lean();
-  //console.log(contributors)
-  return cb(contributors)
+export function listArticles(){
+  return Post.find({}).exec()
 }
 
-export function listContributorsPromise(){
+export function listContributors(){
   return User.find().select('email').lean().exec();
 }
 
-
-export async function findArticle(slug, cb) {
-  let article = await Post.find({slug: slug}).populate('author')
-  //console.log(article)
-  return cb(article)
-}
-
-export function findArticlePromise(slug){
+export function findArticle(slug){
   return Post.find({slug: slug}).populate('author').exec();
 }
 
-export async function listCategories(cb) {
-  //add .populate('author')
-  //add .select('title, slug, author')
-  let categories = await Category.find({});
-  return cb(categories)
-}
-
-export function listCategoriesPromise(){
+export function listCategories(){
   return Category.find({}).exec()
 }
 
-export async function addCategory(name, cb) {
+export async function addCategory(name){
   let result = await Category.exists({ name: name })
-  console.log(result)
   if (result == false ){
     //console.log(`inside savePost! title: ${title}, content extended: ${extended}, authors: ${author[0].value}, state: ${state}, date published: ${publishedDate}`)
-    let category = new Category ({
+    let category = new Category({
       name: name
     })
-    category.save(async function(err, catDoc) {
-      if (err) return cb(err);
-      console.log(catDoc);
-      return cb(null, catDoc);
-    });
+    return category.save()
   } else {
-    if (err) return cb(err)
-    return cb(null, null)
+    return null
   }
 }
