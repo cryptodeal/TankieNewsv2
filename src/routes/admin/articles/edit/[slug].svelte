@@ -125,7 +125,6 @@
           ],
           handlers: {
             'tweet': async function(){
-              //value = 'https://twitter.com/kekethekhaleesi/status/1278548261205352448'
               let value = prompt(`Enter the tweet's url:`)
               if(value === '' || value == null){
                 return null;
