@@ -1,4 +1,4 @@
-import { saveArticle, listArticles, verifyToken, deleteArticle } from '../../../mongoose'
+import { saveArticle, verifyToken, deleteArticle } from '../../../mongoose'
 
 export function post(req, res){
   verifyToken(req.cookies['authToken'], function(err, verifiedJwt){

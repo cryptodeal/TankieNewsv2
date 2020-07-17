@@ -1,10 +1,10 @@
 import mongoose from 'mongoose'
 require('dotenv').config();
-const nJwt = require('njwt');
 import User from '@models/User';
 import Post from '@models/Post';
 import Category from '@models/Category'
 import signingKey from './server'
+import jwt from 'jsonwebtoken'
 
 mongoose.connect(process.env.MONGOOSE_URI, {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false});
 
@@ -40,25 +40,31 @@ export async function validateUser(email, password, cb) {
   })
 }
 
-//API function
-export async function createToken(user, cb) {
+export async function createToken(user, cb){
   let claims = {
     email:  user.email,
     scope: [ 'admin' ],
     iss: 'http://localhost:3000/'
   }
-  const token = await nJwt.create(claims,signingKey).compact();
+  let token = await jwt.sign(claims, signingKey, { expiresIn: '1h' });
   return cb(token)
 }
 
-export async function verifyToken(token, cb) {
-  nJwt.verify(token, signingKey, function(err, verifiedJwt){
-    if(err){
-      return cb(err); // Token has expired, has been tampered with, etc
-    } else{
-      return cb(null, verifiedJwt); // Will contain the header and body
-    }
+export function verifyToken(token, cb){
+  jwt.verify(token, signingKey, function(err, decoded) {
+    if(err) return cb(err)
+    return cb(null, decoded)
   });
+}
+
+export function routerVerify(token){
+  return jwt.verify(token, signingKey, (err, verifiedJwt) => {
+    if(err){
+      return false
+    }else{
+      return verifiedJwt
+    }
+  })
 }
 
 export async function saveArticle(title, extended, author, state, date){
