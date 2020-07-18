@@ -123,7 +123,7 @@ export function listContributors(){
 }
 
 export function findArticle(slug){
-  return Post.find({slug: slug}).populate('author').exec();
+  return Post.find({slug: slug}).populate('author').populate('categories').exec();
 }
 
 export function listCategories(){

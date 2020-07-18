@@ -28,27 +28,31 @@
   const { session } = stores()
   let sidebar_show = false;
   let quill;
-  const entry = {
-    brief: ''
-  }
+  let brief = ''
+  if (article.content.brief) brief = article.content.brief
   let editor;
   let stateOptions = ['draft', 'published', 'archived']
   let state = article.state;
   let title = article.title;
   const today = new Date();
   let start = new Date();
-	let dateFormat = '#{l}, #{F} #{j}, #{Y}';
-  let formattedSelected;
-	let dateChosen = false;
-	let exampleFormatted = false;
-	let exampleChosen = false;
+  let dateFormat = '#{l}, #{F} #{j}, #{Y}';
+  let formattedSelected
+  let dateChosen
+  if (article.publishedDate){
+    formattedSelected = article.publishedDate;
+    dateChosen = true;
+  } else {
+    formattedSelected;
+    dateChosen = false;
+  }
   let authors = []
   let selectedCat = []
   article.author.map(auth => {
     authors.push({value: auth._id, label: auth.email})
   })
   article.categories.map(cat => {
-    selectCat.push({value: cat._id, label: cat.name})
+    selectedCat.push({value: cat._id, label: cat.name})
   })
 
 	onMount(async() => {
@@ -149,9 +153,9 @@
     if (formattedSelected) body.publishedDate = formattedSelected
     if (authors) body.author = authors
     if (selectedCat) body.categories = selectedCat
-    if (entry.brief || quill.root.innerHTML){
+    if (brief || quill.root.innerHTML){
       let content = {}
-      if (entry.brief) content.brief = entry.brief
+      if (brief) content.brief = brief
       if (quill.root.innerHTML) content.extended = quill.root.innerHTML
       body.content = content
     }
@@ -339,7 +343,7 @@
         </Grid>
         <Grid xs={12} md={10} lg={11}>
           <form>
-            <Textarea name={'Content Brief'} bind:value={entry.brief} />
+            <Textarea name={'Content Brief'} type='text' bind:value={brief} />
           </form>
         </Grid>
       </Grid>

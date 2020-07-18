@@ -19,6 +19,7 @@ nav {
 	flex-direction: column;
 	overflow-y: auto;
 	color: #e1ffff;
+  z-index: 5;
 }
 .tabs a{
   text-decoration: none;
