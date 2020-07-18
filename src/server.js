@@ -8,8 +8,7 @@ const { json } = require('body-parser');
 const secureRandom = require('secure-random');
 import { routerVerify } from './mongoose'
 
-const signingKey = secureRandom(256, {type: 'Buffer'});
-export default signingKey;
+export let signingKey = secureRandom(256, {type: 'Buffer'});
 
 import { guard } from '@beyonk/sapper-rbac'
 import routes from './config/routes.js'

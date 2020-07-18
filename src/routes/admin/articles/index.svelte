@@ -1,5 +1,5 @@
 <script context="module">
-    export function preload({ params, query }) {
+  export function preload({ params, query }) {
 		return this.fetch(`admin/articles.json`).then(r => r.json()).then(articles => {
 			return { articles };
 		});

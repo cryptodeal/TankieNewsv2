@@ -1,14 +1,10 @@
 <script context="module">
 	export async function preload({ params, query }) {
 		// the `slug` parameter is available because
-		// this file is called [slug].svelte
-		const res = await this.fetch(`admin/articles/edit/${params.slug}.json`);
-    const data = await res.json();
-    if(data.message){
-      console.log(data.message)
-    } else {
-       return { article: data.article[0], contributors: data.contributors, categories: data.categories };
-    }
+    // this file is called [slug].svelte
+    return this.fetch(`admin/articles/edit/${params.slug}.json`).then(r => r.json()).then(data => {
+			return { article: data.article[0], contributors: data.contributors, categories: data.categories };
+		});
 	}
 </script>
 
@@ -28,6 +24,8 @@
   const { session } = stores()
   let sidebar_show = false;
   let quill;
+  let _id = article._id
+  //console.log(id)
   let brief = ''
   if (article.content.brief) brief = article.content.brief
   let editor;
@@ -159,6 +157,7 @@
       if (quill.root.innerHTML) content.extended = quill.root.innerHTML
       body.content = content
     }
+    let id = {_id: _id}
     //if (entry.brief) body.content.brief = entry.brief
     //if (quill.root.innerHTML) body.content.extended = quill.root.innerHTML
     console.log(body)
@@ -170,7 +169,10 @@
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify(body)
+      body: JSON.stringify({
+        article: body,
+        id: id
+      })
     })
     const data = await res.json();
 		console.log(data)
@@ -264,7 +266,7 @@
 </style>
 
 <svelte:head>
-	<title>{article.title}</title>
+	<title>{article.title}. ID: {article._id}</title>
 </svelte:head>
 
 <main>

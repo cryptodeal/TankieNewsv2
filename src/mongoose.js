@@ -3,7 +3,7 @@ require('dotenv').config();
 import User from '@models/User';
 import Post from '@models/Post';
 import Category from '@models/Category'
-import signingKey from './server'
+import { signingKey } from './server'
 import jwt from 'jsonwebtoken'
 
 mongoose.connect(process.env.MONGOOSE_URI, {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false});
@@ -67,7 +67,7 @@ export function routerVerify(token){
   })
 }
 
-export async function saveArticle(body){
+export async function saveArticle(id, body){
   let result = await Post.exists({ title: body.title })
   if (result == false ){
     //console.log(`inside savePost! title: ${title}, content extended: ${extended}, authors: ${author[0].value}, state: ${state}, date published: ${publishedDate}`)
@@ -95,8 +95,7 @@ export async function saveArticle(body){
     }
     body.categories = categories
     //console.log(`inside savePost! title: ${title}, content extended: ${extended}, authors: ${JSON.stringify(author)}`)
-    let updatedArticle = body
-    return Post.findOneAndUpdate({title: body.title}, {$set: updatedArticle}, {new: true}).exec()
+    return Post.findByIdAndUpdate(id, {$set: body}, {new: true}).exec()
   }
 }
 

@@ -1,7 +1,7 @@
 // posts from './_posts.js';
 import { findArticle, listCategories, listContributors } from '../../../../mongoose'
 
-export async function get(req, res, next) {
+export async function get(req, res) {
 	const { slug } = req.params;
   console.log(`fetching article...`);
   let contributors = await listContributors().catch(console.error)
