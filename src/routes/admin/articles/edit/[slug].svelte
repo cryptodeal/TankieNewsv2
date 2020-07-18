@@ -20,7 +20,6 @@
   import 'quill/dist/quill.snow.css'
   import Datepicker from 'svelte-calendar'
   import Sidebar from '../../../../components/Sidebar.svelte'
-
   const { session } = stores()
   let sidebar_show = false;
   let quill;
@@ -158,8 +157,6 @@
       body.content = content
     }
     let id = {_id: _id}
-    //if (entry.brief) body.content.brief = entry.brief
-    //if (quill.root.innerHTML) body.content.extended = quill.root.innerHTML
     console.log(body)
     console.log(`here is the inner html: ${quill.root.innerHTML}`)
     let res = await fetch(`api/content/articles`, {

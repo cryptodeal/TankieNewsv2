@@ -2,8 +2,77 @@
 	export async function preload({ params, query }) {
 		// the `slug` parameter is available because
     // this file is called [slug].svelte
-    return this.fetch(`admin/users.json`).then(r => r.json()).then(data => {
-			return { data };
+    return this.fetch(`admin/users.json`).then(r => r.json()).then(users => {
+			return { users };
 		});
 	}
 </script>
+<script>
+    export let users;
+    import Sidebar from '../../components/Sidebar.svelte'
+    import { goto, stores } from '@sapper/app'
+    let sidebar_show = false;
+</script>
+<style>
+  * {
+      box-sizing: border-box;
+  }
+  ul {
+		margin: 0 0 1em 0;
+		line-height: 1.5;
+  }
+  .row {
+      display: flex;
+  }
+  main {
+      position: relative;
+      background-color: white;
+      margin: 0 auto;
+      box-sizing: border-box;
+  }
+  .column1 {
+      padding: 10px;
+      height: 100%;
+      flex: 15%;
+  }
+  .column2 {
+      flex: 85%;
+      padding: 10px;
+  }
+  .openbtn {
+    font-size: 13px;
+    cursor: pointer;
+    background-color: #d74e4d;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+  }
+</style>
+
+
+<main>
+  <div class="row">
+    <div class='side'>
+      <Sidebar bind:show={sidebar_show}/>
+    </div>
+    <div class="column1">
+      <button class="openbtn" on:click={() => sidebar_show = !sidebar_show}>☰ Open Sidebar</button>
+    </div>
+    <div class="column2">
+        <h1>Manage Users</h1>
+            <ul>
+              {#if users.length}
+                {#each users as user}
+                    <!-- we're using the non-standard `rel=prefetch` attribute to
+                            tell Sapper to load the data for the page as soon as
+                            the user hovers over the link or taps it, instead of
+                            waiting for the 'click' event -->
+                    <li>{user.email}</li>
+                {/each}
+              {:else}
+                <p>No users</p>
+              {/if}
+            </ul>
+    </div>
+  </div>
+</main>

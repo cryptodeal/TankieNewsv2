@@ -141,3 +141,7 @@ export async function addCategory(name){
     return null
   }
 }
+
+export function listUsers(){
+  return User.find({}).exec()
+}
