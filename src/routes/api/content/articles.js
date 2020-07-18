@@ -9,8 +9,8 @@ export function post(req, res){
       }
     else {
       console.log(verifiedJwt)
-      console.log(`POST request received! Title: ${req.body.title}, Content: ${req.body.extended}, authors: ${req.body.authors}, state: ${req.body.state}, date published: ${req.body.publishedDate}`)
-      saveArticle(req.body.title, req.body.extended, req.body.author, req.body.state, req.body.publishedDate).then(article => {
+      console.log(`${JSON.stringify(req.body)}`)
+      saveArticle(req.body).then(article => {
         if(!article){
           console.log('Post already exists')
           res.statusCode = 409

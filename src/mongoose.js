@@ -26,7 +26,6 @@ export async function createUser(email, password, cb) {
   }
 }
 
-//TODO: fix cb not a function errors
 export async function validateUser(email, password, cb) {
   let user = await User.findOne({email: email})
   user.comparePassword(password, async function(err, isMatch){
@@ -43,6 +42,7 @@ export async function validateUser(email, password, cb) {
 export async function createToken(user, cb){
   let claims = {
     email:  user.email,
+    //hard coding scope until admin panel allows scope to be set
     scope: [ 'admin' ],
     iss: 'http://localhost:3000/'
   }
@@ -67,40 +67,36 @@ export function routerVerify(token){
   })
 }
 
-export async function saveArticle(title, extended, author, state, date){
-  let result = await Post.exists({ title: title })
+export async function saveArticle(body){
+  let result = await Post.exists({ title: body.title })
   if (result == false ){
     //console.log(`inside savePost! title: ${title}, content extended: ${extended}, authors: ${author[0].value}, state: ${state}, date published: ${publishedDate}`)
     let authors = [];
-    if(author !== undefined){
-      author.map(auth => authors.push(auth.value))
+    let categories = []
+    if(body.author !== undefined){
+      body.author.map(auth => authors.push(auth.value))
     }
-    let article = new Post ({
-      title: title,
-      content: {
-        extended: extended
-      },
-      author: authors,
-      state: state,
-      publishedDate: date
-    })
+    body.author = authors
+    if(body.categories !== undefined){
+      body.categories.map(cat => categories.push(cat.value))
+    }
+    body.categories = categories
+    let article = new Post (body)
     return article.save()
   } else {
     let authors = [];
-    if(author !== undefined){
-      author.map(auth => authors.push(auth.value))
+    let categories = [];
+    if(body.author !== undefined){
+      body.author.map(auth => authors.push(auth.value))
     }
+    body.author = authors
+    if(body.categories !== undefined){
+      body.categories.map(cat => categories.push(cat.value))
+    }
+    body.categories = categories
     //console.log(`inside savePost! title: ${title}, content extended: ${extended}, authors: ${JSON.stringify(author)}`)
-    let updatedArticle = {
-      title: title,
-      content: {
-        extended: extended
-      },
-      author: authors,
-      state: state,
-      publishedDate: date
-    }
-    return Post.findOneAndUpdate({title: title}, {$set: updatedArticle}, {new: true}).exec()
+    let updatedArticle = body
+    return Post.findOneAndUpdate({title: body.title}, {$set: updatedArticle}, {new: true}).exec()
   }
 }
 

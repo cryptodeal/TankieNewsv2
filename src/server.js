@@ -3,6 +3,7 @@ import polka from 'polka'
 import compression from 'compression'
 import * as sapper from '@sapper/server'
 import cookieParser from 'cookie-parser'
+import mongoSanitize from 'express-mongo-sanitize'
 const { json } = require('body-parser');
 const secureRandom = require('secure-random');
 import { routerVerify } from './mongoose'
@@ -22,6 +23,7 @@ polka()
     sirv('static', { dev }),
     cookieParser(),
     json(),
+    mongoSanitize(),
 
     (req, res, next) => {
       const token = req.cookies['authToken']

@@ -143,6 +143,21 @@
   })
 
   async function saveArticle() {
+    let body = {}
+    if (title) body.title = title
+    if (state) body.state = state.value
+    if (formattedSelected) body.publishedDate = formattedSelected
+    if (authors) body.author = authors
+    if (selectedCat) body.categories = selectedCat
+    if (entry.brief || quill.root.innerHTML){
+      let content = {}
+      if (entry.brief) content.brief = entry.brief
+      if (quill.root.innerHTML) content.extended = quill.root.innerHTML
+      body.content = content
+    }
+    //if (entry.brief) body.content.brief = entry.brief
+    //if (quill.root.innerHTML) body.content.extended = quill.root.innerHTML
+    console.log(body)
     console.log(`here is the inner html: ${quill.root.innerHTML}`)
     let res = await fetch(`api/content/articles`, {
       method: "POST",
@@ -151,13 +166,7 @@
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({
-        title: title,
-				extended: quill.root.innerHTML,
-        author: authors,
-        state: state.value,
-        publishedDate: formattedSelected
-      })
+      body: JSON.stringify(body)
     })
     const data = await res.json();
 		console.log(data)
