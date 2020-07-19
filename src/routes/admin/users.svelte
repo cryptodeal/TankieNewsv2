@@ -8,20 +8,20 @@
 	}
 </script>
 <script>
-  export let items;
-  import Grid from 'svelte-grid-responsive'
-  import Sidebar from '../../components/Sidebar.svelte'
-  import VirtualList from '../../components/VirtualList.svelte'
-  import UserListItem from '../../components/UserListItem.svelte'
-  import { goto, stores } from '@sapper/app'
-  //console.log(items)
-  let sidebar_show = false;
-  let emailSearch = '';
-  let scopeSearch = '';
-  $: filteredList = items.filter(item => item.email.indexOf(emailSearch) !== -1 && item.scope.indexOf(scopeSearch) !== -1);
-  let start;
-  let end;
-
+    export let items;
+    import Grid from 'svelte-grid-responsive'
+    import Sidebar from '../../components/Sidebar.svelte'
+    import VirtualList from '@sveltejs/svelte-virtual-list'
+    import UserListItem from '../../components/UserListItem.svelte'
+    import { goto, stores } from '@sapper/app'
+    //console.log(items)
+    let sidebar_show = false;
+    let emailSearch = '';
+    let scopeSearch = '';
+    //let filteredList = [];
+	  $: filteredList = items.filter(item => item.email.toLowerCase().indexOf(emailSearch.toLowerCase()) !== -1 && item.scope.toLowerCase().indexOf(scopeSearch.toLowerCase()) !== -1);
+	  let start;
+    let end;
 </script>
 <style>
   * {
@@ -82,10 +82,15 @@
           </Grid>
           <Grid container gutter={12}>
             <Grid xs={12} md={6} lg={6}>
-              Email Filter: <input bind:value={emailSearch}/>
+              Email Filter: <input type='text' bind:value={emailSearch}/>
             </Grid>
             <Grid xs={12} md={6} lg={6}>
-              Permission Filter: <input bind:value={scopeSearch}/>
+              <select bind:value={scopeSearch}>
+                <option value=''>-- Select User Type --</option>
+                <option value="admin">admin</option>
+                <option value="user">user</option>
+              </select>
+              Permissions Filter: <input type='text' bind:value={scopeSearch}/>
             </Grid>
           </Grid>
           <VirtualList items={filteredList} bind:start bind:end let:item>
