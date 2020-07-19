@@ -3,6 +3,7 @@ import polka from 'polka'
 import compression from 'compression'
 import * as sapper from '@sapper/server'
 import cookieParser from 'cookie-parser'
+import jwt from 'jsonwebtoken'
 import mongoSanitize from 'express-mongo-sanitize'
 const { json } = require('body-parser');
 const secureRandom = require('secure-random');
@@ -26,7 +27,8 @@ polka()
 
     (req, res, next) => {
       const token = req.cookies['authToken']
-      const profile = token ? routerVerify(token) : false
+      //const profile = token ? routerVerify(token) : false
+      const profile = token ? jwt.decode(token) : false
       //console.log(profile)
       const options = {
         routes,

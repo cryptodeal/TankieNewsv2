@@ -10,8 +10,8 @@ mongoose.connect(process.env.MONGOOSE_URI, {useNewUrlParser: true, useUnifiedTop
 
 //async function to check if email exists, then create user in mongodb.
 export async function createUser(email, password, cb) {
-  let result = await User.findOne({ email: email }).select("_id").lean();
-  if (!result){
+  let result = await User.exists({ email: email })
+  if (result == false){
     console.log(`inside createUser function email: ${email} and password: ${password}`)
     let user = new User ({
       email: email,

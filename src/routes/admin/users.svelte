@@ -2,24 +2,30 @@
 	export async function preload({ params, query }) {
 		// the `slug` parameter is available because
     // this file is called [slug].svelte
-    return this.fetch(`admin/users.json`).then(r => r.json()).then(users => {
-			return { users };
+    return this.fetch(`admin/users.json`).then(r => r.json()).then(items => {
+			return { items };
 		});
 	}
 </script>
 <script>
-    export let users;
-    import Sidebar from '../../components/Sidebar.svelte'
-    import { goto, stores } from '@sapper/app'
-    let sidebar_show = false;
+  export let items;
+  import Grid from 'svelte-grid-responsive'
+  import Sidebar from '../../components/Sidebar.svelte'
+  import VirtualList from '../../components/VirtualList.svelte'
+  import UserListItem from '../../components/UserListItem.svelte'
+  import { goto, stores } from '@sapper/app'
+  //console.log(items)
+  let sidebar_show = false;
+  let emailSearch = '';
+  let scopeSearch = '';
+  $: filteredList = items.filter(item => item.email.indexOf(emailSearch) !== -1 && item.scope.indexOf(scopeSearch) !== -1);
+  let start;
+  let end;
+
 </script>
 <style>
   * {
       box-sizing: border-box;
-  }
-  ul {
-		margin: 0 0 1em 0;
-		line-height: 1.5;
   }
   .row {
       display: flex;
@@ -47,8 +53,13 @@
     padding: 10px 15px;
     border: none;
   }
+  .container {
+		border-top: 1px solid #333;
+		border-bottom: 1px solid #333;
+		min-height: 200px;
+		height: calc(100vh - 15em);
+	}
 </style>
-
 
 <main>
   <div class="row">
@@ -59,20 +70,29 @@
       <button class="openbtn" on:click={() => sidebar_show = !sidebar_show}>☰ Open Sidebar</button>
     </div>
     <div class="column2">
-        <h1>Manage Users</h1>
-            <ul>
-              {#if users.length}
-                {#each users as user}
-                    <!-- we're using the non-standard `rel=prefetch` attribute to
-                            tell Sapper to load the data for the page as soon as
-                            the user hovers over the link or taps it, instead of
-                            waiting for the 'click' event -->
-                    <li>{user.email}</li>
-                {/each}
-              {:else}
-                <p>No users</p>
-              {/if}
-            </ul>
+      <h1>Manage Users</h1>
+        <div class='container'>
+          <Grid container gutter={12}>
+            <Grid xs={12} md={6} lg={6}>
+              <p>Email:</p>
+            </Grid>
+            <Grid xs={12} md={6} lg={6}>
+              <p>Permissions:</p>
+            </Grid>
+          </Grid>
+          <Grid container gutter={12}>
+            <Grid xs={12} md={6} lg={6}>
+              Email Filter: <input bind:value={emailSearch}/>
+            </Grid>
+            <Grid xs={12} md={6} lg={6}>
+              Permission Filter: <input bind:value={scopeSearch}/>
+            </Grid>
+          </Grid>
+          <VirtualList items={filteredList} bind:start bind:end let:item>
+		        <UserListItem {...item}/>
+	        </VirtualList>
+	        <p>showing users {start}-{end}</p>
+        </div>
     </div>
   </div>
 </main>
