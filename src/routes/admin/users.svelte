@@ -57,7 +57,7 @@
 		border-top: 1px solid #333;
 		border-bottom: 1px solid #333;
 		min-height: 200px;
-		height: calc(100vh - 15em);
+		height: calc(60vh - 15em);
 	}
 </style>
 
@@ -71,28 +71,24 @@
     </div>
     <div class="column2">
       <h1>Manage Users</h1>
+        <Grid container gutter={12}>
+          <Grid xs={4} md={4} lg={4}>
+            <h3>Email: </h3> <input type='text' bind:value={emailSearch}/>
+          </Grid>
+          <Grid xs={4} md={4} lg={4}>
+            <h3>Permissions: </h3>
+            <select bind:value={scopeSearch}>
+              <option value=''>-- Select User Type --</option>
+              <option value="admin">admin</option>
+              <option value="user">user</option>
+            </select>
+          </Grid>
+          <Grid xs={4} md={4} lg={4}>
+            <h3>Edit:</h3>
+          </Grid>
+        </Grid>
+        <br/>
         <div class='container'>
-          <Grid container gutter={12}>
-            <Grid xs={12} md={6} lg={6}>
-              <p>Email:</p>
-            </Grid>
-            <Grid xs={12} md={6} lg={6}>
-              <p>Permissions:</p>
-            </Grid>
-          </Grid>
-          <Grid container gutter={12}>
-            <Grid xs={12} md={6} lg={6}>
-              Email Filter: <input type='text' bind:value={emailSearch}/>
-            </Grid>
-            <Grid xs={12} md={6} lg={6}>
-              <select bind:value={scopeSearch}>
-                <option value=''>-- Select User Type --</option>
-                <option value="admin">admin</option>
-                <option value="user">user</option>
-              </select>
-              Permissions Filter: <input type='text' bind:value={scopeSearch}/>
-            </Grid>
-          </Grid>
           <VirtualList items={filteredList} bind:start bind:end let:item>
 		        <UserListItem {...item}/>
 	        </VirtualList>
