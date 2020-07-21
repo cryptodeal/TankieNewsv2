@@ -33,7 +33,6 @@
   }
   .logoColumn{
     width: 80%;
-    align-self: center;
   }    
   .formColumn{
     height: 50%;

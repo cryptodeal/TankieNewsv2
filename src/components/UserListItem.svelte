@@ -3,17 +3,17 @@
   import EditUserModal from './EditUserModal.svelte';
 	export let email;
   export let scope;
-  let showEditUserModal = false;
+  export let showEditUserModal = false;
 </script>
 <style>
   .list {
-    position: inherit;
+    position: absolute;
     top: 50%;
     -ms-transform: translateY(-50%);
     transform: translateY(-50%);
   }
   .card {
-		position: inherit;
+		position: relative;
 		margin: 0.5em;
 		padding: 0.5em 0.5em 0.5em 3em;
 		border: 1px solid #eee;
@@ -45,6 +45,11 @@
   </div>
 
 {#if showEditUserModal}
+  <style>
+    .card{
+      overflow: hidden;
+    }
+  </style>
   <EditUserModal on:close="{() => showEditUserModal = false}">
     <h4 class="title" slot="header">
       Details for User <code>{email}</code>

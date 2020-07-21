@@ -21,13 +21,14 @@
 
 <style>
   .modal-background {
-    position: fixed;
+    position: relative;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     background: rgba(0,0,0,0.3);
     z-index: 99;
+    overflow: hidden;
   }
   .modal {
     position: relative;
@@ -36,7 +37,7 @@
     width: calc(100vw - 4em);
     max-width: 32em;
     max-height: calc(100vh - 4em);
-    overflow: auto;
+    overflow: hidden;
     transform: translate(-50%,-50%);
     padding: 1em;
     border-radius: 0.2em;

@@ -18,6 +18,7 @@
     let sidebar_show = false;
     let emailSearch = '';
     let scopeSearch = '';
+    let useritemlist_show = false;
     //let filteredList = [];
 	  $: filteredList = items.filter(item => item.email.toLowerCase().indexOf(emailSearch.toLowerCase()) !== -1 && item.scope.toLowerCase().indexOf(scopeSearch.toLowerCase()) !== -1);
 	  let start;
