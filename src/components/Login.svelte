@@ -1,8 +1,38 @@
 <script>
-  let password;
-  let email;
-  async function login () {
-    await fetch('api/session', {
+  import { createForm } from 'svelte-forms-lib';
+  const { form, errors, state, handleChange, handleSubmit } = createForm({
+    initialValues: {
+      email: '',
+      password: '',
+    },
+    validate: values => {
+      let errs = {}
+      let emailRegex = /^[a-zA-Z0-9\-_]+(\.[a-zA-Z0-9\-_]+)*@[a-z0-9]+(\-[a-z0-9]+)*(\.[a-z0-9]+(\-[a-z0-9]+)*)*\.[a-z]{2,4}$/;
+      if(values.email === ''){
+        errs['email'] = 'Email is required'
+      }
+      if(emailRegex.test(values.email) == false){
+        errs['email'] = 'Please enter valid email address'
+      }
+      if(values.password === ''){
+        errs['password'] = 'Password is required'
+      }
+      return errs;
+    },
+      onSubmit: values => {
+        return login(values.email, values.password).then(function(response) {
+          if (response.status === 401) {
+            alert("Incorrect email or password. Please try again.")
+            event.preventDefault()
+          } else{
+                window.location.href= 'profile' 
+          }
+        })
+      }
+  });
+
+  function login (email, password) {
+    return fetch('api/session', {
       method: 'POST',
       mode: 'cors',
       credentials: 'include',
@@ -13,25 +43,56 @@
         email,
         password
       })
-    }).then(function(response) {
-    if (response.status === 401) {
-      alert("Incorrect email or password. Please try again.")
-    }
-  })
-    window.location.href= 'profile' 
+    })
+  }
+</script>
+<style>
+  small {
+    color: red;
   }
 
-</script>
-<br/>
-<form>
-  <select bind:value={email}>
-    <option value={null}>-- Select User Type --</option>
-    <option value="admin@example.com">Test Admin</option>
-    <option value="contributor@example.org">Test Contributor</option>
-    <option value="moderator@example.org">Test Moderator</option>
-    <option value="subscriber@example.net">Test Subscriber</option>
-    <option value="user@example.net">Test User</option>
-  </select>
-  <input id="password" type="password" bind:value={password} />  
-  <button id='login' type='button' disabled={!email || !password} on:click={login}>Login</button>
-</form>
+  input[type=text], input[type=password]{
+    width: 100%;
+    height: 2em;
+    box-sizing : border-box;
+    border-radius: 4px;
+  }
+  .errors{
+    height:1em;
+  }
+</style>
+  <form on:submit={handleSubmit}>
+    <label for='email'>Email</label>
+    <input
+    id='email'
+    name='email'
+    type='text'
+    placeholder='Enter email...'
+    on:change={handleChange}
+    on:blur={handleChange}
+    bind:value={$form.email}
+    />
+    <div class=errors>
+      {#if $errors.email}
+        <small>{$errors.email}</small>
+      {/if}
+    </div>
+    <br>
+    <label for='password'>Password</label>
+    <input
+      id='password'
+      placeholder='Enter password...'
+      name='password'
+      type='password'
+      on:change={handleChange}
+      on:blur={handleChange}
+      bind:value={$form.password}
+    />
+    <div class=errors>
+      {#if $errors.password}
+        <small>{$errors.password}</small>
+      {/if}
+    </div>
+    <br>
+    <button type='submit'>Login</button>
+  </form>

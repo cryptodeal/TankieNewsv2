@@ -47,9 +47,9 @@
     "secure-random": "^1.1.2",
     "svelte": "^3.24.0",
     "svelte-calendar": "^1.5.0",
-    "svelte-forms": "^1.2.0",
+    "svelte-forms-lib": "^1.1.2",
     "svelte-grid-responsive": "^0.3.0",
-    "svelte-image": "^0.2.3",
+    "svelte-image": "^0.2.6",
     "svelte-select": "^3.10.0"
   }
 }

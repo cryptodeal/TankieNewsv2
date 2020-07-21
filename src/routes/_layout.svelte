@@ -7,7 +7,6 @@
   import { stores, goto } from "@sapper/app";
   
   const { page, session } = stores();
-  const image = Image;
   const options = {
     routes,
     deny: () => goto("/")
@@ -36,6 +35,9 @@
   .logo-container {
 		width: 100%;
 	  /*will-change: transform;*/
+  }
+  :global(.cool) {
+    object-fit: scale-down;
   }
   
 </style>

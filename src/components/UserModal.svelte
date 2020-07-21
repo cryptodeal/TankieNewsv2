@@ -47,10 +47,11 @@
   position: relative;
   background-color: #ffffff;
   width: 50vw;
+  height: 50vh;
   margin: 1rem auto 0.2rem;
   box-shadow: 0 3px 10px #555;
 }
 main {
-  padding: 0.5rem;
+  padding: 1vh .5vw;
 }
 </style>

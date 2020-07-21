@@ -27,7 +27,7 @@ export async function post(req, res){
     
 }
 //Logout by expiring auth cookie
-export async function del(res){
+export function del(req, res){
   res.statusCode = 200
   res.setHeader('Set-Cookie', `authToken=; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; Path=/`)
   res.end()
