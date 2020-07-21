@@ -61,38 +61,39 @@
     height:1em;
   }
 </style>
-  <form on:submit={handleSubmit}>
-    <label for='email'>Email</label>
-    <input
-    id='email'
-    name='email'
-    type='text'
-    placeholder='Enter email...'
+
+<form on:submit={handleSubmit}>
+  <label for='email'>Email</label>
+  <input
+  id='email'
+  name='email'
+  type='text'
+  placeholder='Enter email...'
+  on:change={handleChange}
+  on:blur={handleChange}
+  bind:value={$form.email}
+  />
+  <div class=errors>
+    {#if $errors.email}
+      <small>{$errors.email}</small>
+    {/if}
+  </div>
+  <br>
+  <label for='password'>Password</label>
+  <input
+    id='password'
+    placeholder='Enter password...'
+    name='password'
+    type='password'
     on:change={handleChange}
     on:blur={handleChange}
-    bind:value={$form.email}
-    />
-    <div class=errors>
-      {#if $errors.email}
-        <small>{$errors.email}</small>
-      {/if}
-    </div>
-    <br>
-    <label for='password'>Password</label>
-    <input
-      id='password'
-      placeholder='Enter password...'
-      name='password'
-      type='password'
-      on:change={handleChange}
-      on:blur={handleChange}
-      bind:value={$form.password}
-    />
-    <div class=errors>
-      {#if $errors.password}
-        <small>{$errors.password}</small>
-      {/if}
-    </div>
-    <br>
-    <button type='submit'>Login</button>
-  </form>
+    bind:value={$form.password}
+  />
+  <div class=errors>
+    {#if $errors.password}
+      <small>{$errors.password}</small>
+    {/if}
+  </div>
+  <br>
+  <button type='submit'>Login</button>
+</form>

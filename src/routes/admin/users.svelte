@@ -1,4 +1,4 @@
-<script context="module">
+<script context='module'>
 	export async function preload({ params, query }) {
 		// the `slug` parameter is available because
     // this file is called [slug].svelte
@@ -62,14 +62,14 @@
 </style>
 
 <main>
-  <div class="row">
+  <div class='row'>
     <div class='side'>
       <Sidebar bind:show={sidebar_show}/>
     </div>
-    <div class="column1">
-      <button class="openbtn" on:click={() => sidebar_show = !sidebar_show}>☰ Open Sidebar</button>
+    <div class='column1'>
+      <button class='openbtn' on:click={() => sidebar_show = !sidebar_show}>☰ Open Sidebar</button>
     </div>
-    <div class="column2">
+    <div class='column2'>
       <h1>Manage Users</h1>
         <Grid container gutter={12}>
           <Grid xs={4} md={4} lg={4}>
@@ -79,8 +79,8 @@
             <h3>Permissions: </h3>
             <select bind:value={scopeSearch}>
               <option value=''>-- Select User Type --</option>
-              <option value="admin">admin</option>
-              <option value="user">user</option>
+              <option value='admin'>admin</option>
+              <option value='user'>user</option>
             </select>
           </Grid>
           <Grid xs={4} md={4} lg={4}>

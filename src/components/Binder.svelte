@@ -32,7 +32,7 @@
     align-items: center;
   }
   .logoColumn{
-    width: 70%;
+    width: 80%;
     align-self: center;
   }    
   .formColumn{
