@@ -15,13 +15,14 @@ export async function post(req, res){
           res.statusCode = 409
               res.end()
       } else{
-        createToken(user, function(token){
-          const expireInSix = new Date()
-          expireInSix.setHours(expireInSix.getHours() + 6)
+        createToken(user).then(token =>{
+          const expireInOne = new Date()
+          expireInOne.setHours(expireInOne.getHours() + 6)
+          console.log('creating token...')
           res.statusCode = 201
-          res.setHeader('Set-Cookie', `authToken=${token}; Expires=${expireInSix}; HttpOnly; Path=/`)
+          res.setHeader('Set-Cookie', `authToken=${token}; Expires=${expireInOne}; HttpOnly; Path=/`)
           res.end()
-        })
+      })
       }
   })
 }

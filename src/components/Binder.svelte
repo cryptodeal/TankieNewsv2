@@ -25,19 +25,20 @@
   flex-container {
     display: flex;
     flex-direction: column;
-    width: 30vw;
-    margin-right: 10vw;
-    margin-left: 10vw;
+    width: 40vw;
+    margin-right: 5vw;
+    margin-left: 5vw;
     height: 43vh;
     align-items: center;
   }
-  .logoColumn{
-    width: 80%;
-  }    
-  .formColumn{
-    height: 50%;
+  .imageContainer {
+    text-align: center;
+    height: 10%
+  } 
+  .container {
+    position: relative;
+    height: 60%
   }
-
 </style>
 
 <div class=binder>
@@ -51,10 +52,10 @@
   </div>
 </div>
 <flex-container>
-  <div class=logoColumn>
+  <div class=imageContainer>
     <Image class='cool' src='tnn.png' alt='TNN logo small'/>
   </div>
-  <div class=formColumn>
+  <div class="container">
     <svelte:component this={activeComponent} {backpack} />
   </div>
 </flex-container>

@@ -33,8 +33,8 @@
   }
 
   .logo-container {
-		width: 100%;
-	  /*will-change: transform;*/
+		width: 100vw;
+	  will-change: transform;
   }
   :global(.cool) {
     object-fit: scale-down;

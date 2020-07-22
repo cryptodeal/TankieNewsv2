@@ -1,5 +1,7 @@
 <script>
   import { createForm } from 'svelte-forms-lib';
+  import { NotificationDisplay, notifier } from '@beyonk/svelte-notifications'
+  let n
   const { form, errors, state, handleChange, handleSubmit } = createForm({
     initialValues: {
       email: '',
@@ -10,22 +12,27 @@
       let emailRegex = /^[a-zA-Z0-9\-_]+(\.[a-zA-Z0-9\-_]+)*@[a-z0-9]+(\-[a-z0-9]+)*(\.[a-z0-9]+(\-[a-z0-9]+)*)*\.[a-z]{2,4}$/;
       if(values.email === ''){
         errs['email'] = 'Email is required'
+        //notifier.danger('Email is required')
       }
       if(emailRegex.test(values.email) == false){
         errs['email'] = 'Please enter valid email address'
+        //notifier.danger('Please enter a valid email address')
       }
       if(values.password === ''){
         errs['password'] = 'Password is required'
+        notifier.danger('Password is required')
       }
       return errs;
     },
       onSubmit: values => {
         return login(values.email, values.password).then(function(response) {
           if (response.status === 401) {
-            alert("Incorrect email or password. Please try again.")
+            //alert("Incorrect email or password. Please try again.")
+            notifier.danger('Failed Login')
             event.preventDefault()
           } else{
-                window.location.href= 'profile' 
+            notifier.success('Login worked!')
+            window.location.href= 'profile' 
           }
         })
       }
@@ -63,6 +70,7 @@
 </style>
 
 <form on:submit={handleSubmit}>
+  <NotificationDisplay bind:this={n} />
   <label for='email'>Email</label>
   <input
   id='email'

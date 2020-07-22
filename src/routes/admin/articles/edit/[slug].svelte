@@ -15,6 +15,7 @@
 	import { goto, stores } from '@sapper/app'
   import { onMount } from 'svelte'
   import Select from 'svelte-select';
+  import { NotificationDisplay, notifier } from '@beyonk/svelte-notifications'
   import Textarea from "../../../../components/Textarea.svelte";
   import Grid from 'svelte-grid-responsive'
   import 'quill/dist/quill.snow.css'
@@ -24,6 +25,7 @@
   let sidebar_show = false;
   let quill;
   let _id = article._id
+  let n;
   //console.log(id)
   let brief = ''
   if (article.content.brief) brief = article.content.brief
@@ -275,6 +277,7 @@
       <button class="openbtn" on:click={() => sidebar_show = !sidebar_show}>☰ Open Sidebar</button>
     </div>
     <div class="column2">
+      <NotificationDisplay bind:this={n} />
       <h1>Edit Article</h1>
 			<Grid container gutter={12}>
         <Grid xs={12} md={2} lg={1}>
