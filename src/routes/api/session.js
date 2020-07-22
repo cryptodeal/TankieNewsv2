@@ -18,7 +18,7 @@ export async function post(req, res){
           res.statusCode = 201
           res.setHeader('Set-Cookie', `authToken=${token}; Expires=${expireInOne}; HttpOnly; Path=/`)
           res.end()
-      })
+      }).catch(console.error)
     } else {
       res.statusCode = 401
         res.end()

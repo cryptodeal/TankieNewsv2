@@ -39,7 +39,7 @@ export async function validateUser(email, password, cb) {
   })
 }
 
-export async function createToken(user, cb){
+export async function createToken(user){
   let claims = {
     email:  user.email,
     //hard coding scope until admin panel allows scope to be set
@@ -47,7 +47,7 @@ export async function createToken(user, cb){
     iss: 'http://localhost:3000/'
   }
   let token = await jwt.sign(claims, signingKey, { expiresIn: '1h' });
-  return cb(token)
+  return token;
 }
 
 export function verifyToken(token, cb){
