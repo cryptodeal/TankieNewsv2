@@ -1,43 +1,13 @@
 <script>
-  import { createForm } from 'svelte-forms-lib';
   import { NotificationDisplay, notifier } from '@beyonk/svelte-notifications'
+  import { emailValidator, requiredValidator, pwdSpecCharValidator } from './validators.js'
+  import { createFieldValidator } from './validation.js'
+
+  const [ emailValidity, emailValidate ] = createFieldValidator(requiredValidator(), emailValidator())
+  const [ pwdValidity, pwdValidate ] = createFieldValidator(requiredValidator(), pwdSpecCharValidator())
   let n;
-  const { form, errors, state, handleChange, handleSubmit } = createForm({
-  initialValues: {
-    email: '',
-    password: '',
-  },
-  validate: values => {
-    console.log(values.email)
-    console.log(values.password)
-    let errs = {}
-    let emailRegex = /^[a-zA-Z0-9\-_]+(\.[a-zA-Z0-9\-_]+)*@[a-z0-9]+(\-[a-z0-9]+)*(\.[a-z0-9]+(\-[a-z0-9]+)*)*\.[a-z]{2,4}$/;
-    if(values.email === ''){
-      errs['email'] = 'Email is required'
-      if(errs.email) notifier.danger('Email is required')
-    }
-    if(emailRegex.test(values.email) == false){
-      errs['email'] = 'Please enter valid email address'
-      if(errs.email) notifier.danger('Please enter valid email address')
-    }
-    if(values.password === ''){
-      errs['password'] = 'Password is required'
-      if(errs.password) notifier.danger(errs.password)
-    }
-    return errs;
-  },
-    onSubmit: values => {
-      return register(values.email, values.password).then(function(response) {
-        if (response.status === 401) {
-          //alert('Email already taken')
-          notifier.danger('Email already taken')
-          event.preventDefault()
-        } else{
-          window.location.href= 'profile' 
-        }
-      })
-    }
-  });
+  let email = null;
+  let password = null;
 
   function register (email, password) {
     return fetch('api/signup', {
@@ -51,52 +21,76 @@
         email,
         password
       })
+    }).then(res => {
+      if(res.status === 409){
+        notifier.danger('Email already registered')
+      } else {
+        window.location.href= 'profile'
+      }
     })
   }
 </script>
 <style>
-
-  input[type=text], input[type=password]{
+  .body {
+		display: flex;
+		flex-direction: column;
+    width: 30vw;
+	}
+	
+	input {
+		outline: none;
+		border-width: 2px;
+    border-style: solid;
     width: 100%;
-    height: 2em;
-    box-sizing : border-box;
-    border-radius: 4px;
-  }
-  .errors{
-    height:1em;
-  }
+	}
+	
+	.validation-hint {
+		color: red;
+    padding: 6px 0;
+	}
+	
+	.field-danger {
+		border-color: red;
+	}
+	
+	.field-success {
+		border-color: green;
+	}
 </style>
 
-<form on:submit|preventDefault={handleSubmit}>
-  <label for='email'>Email</label>
-  <input
-  id='email'
-  name='email'
-  type='text'
-  placeholder='Enter email...'
-  on:change={handleChange}
-  bind:value={$form.email}
-  />
-  <div class=errors>
-    {#if $errors.email}
-      <NotificationDisplay bind:this={n} />
+<NotificationDisplay bind:this={n} />
+<div class=body>
+  <form on:submit|preventDefault={register(email, password)}>
+    <label for='email'>Email</label>
+    <input class='input'
+      type='text'
+      id='email'
+      name="email"
+      bind:value={email}
+      class:field-danger={!$emailValidity.valid}
+      class:field-success={$emailValidity.valid}
+      use:emailValidate={email}
+    />
+    {#if $emailValidity.dirty && !$emailValidity.valid}
+      <p class="validation-hint">
+        INVALID: {$emailValidity.message} 
+      </p>
     {/if}
-  </div>
-  <br>
-  <label for='password'>Password</label>
-  <input
-    id='password'
-    placeholder='Enter password...'
-    name='password'
-    type='password'
-    on:change={handleChange}
-    bind:value={$form.password}
-  />
-  <div class=errors>
-    {#if $errors.password}
-      <NotificationDisplay bind:this={n} />
+    <label for='password'>Password</label>
+    <input class='input'
+      type="password"
+      id='password'
+      name="password"
+      bind:value={password} 
+      class:field-danger={!$pwdValidity.valid}
+      class:field-success={$pwdValidity.valid}
+      use:pwdValidate={password}
+    />
+    {#if $pwdValidity.dirty && !$pwdValidity.valid}
+      <p class="validation-hint">
+        INVALID: {$pwdValidity.message} 
+      </p>
     {/if}
-  </div>
-  <br>
-  <button type='submit'>Register</button>
-</form>
+    <button disabled={!$emailValidity.valid || !$pwdValidity.valid}>Login</button>
+  </form>
+</div>

@@ -13,7 +13,7 @@ export async function post(req, res){
       if(!user){
           console.log('user already exists')
           res.statusCode = 409
-              res.end()
+          res.end()
       } else{
         createToken(user).then(token =>{
           const expireInOne = new Date()

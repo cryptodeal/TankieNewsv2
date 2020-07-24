@@ -9,15 +9,7 @@
   
   let email = null;
   let password = null;
-  function submit(){
-    return login(email, password).then(function(response){
-      if(response.status === 401){
-        notifier.danger('Authentication failed')
-      } else {
-        window.location.href= 'profile'
-      }
-    })
-  }
+
   function login (email, password) {
     return fetch('api/session', {
       method: 'POST',
@@ -66,11 +58,14 @@
 		border-color: green;
 	}
 </style>
-  <NotificationDisplay bind:this={n} />
+
+<NotificationDisplay bind:this={n} />
 <div class=body>
   <form on:submit|preventDefault={login(email, password)}>
+    <label for='email'>Email</label>
     <input class='input'
       type='text'
+      id='email'
       name="email"
       bind:value={email}
       class:field-danger={!$emailValidity.valid}
@@ -82,9 +77,10 @@
         INVALID: {$emailValidity.message} 
       </p>
     {/if}
-
+    <label for='password'>Password</label>
     <input class='input'
       type="password"
+      id='password'
       name="password"
       bind:value={password} 
       class:field-danger={!$pwdValidity.valid}
