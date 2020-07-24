@@ -37,7 +37,7 @@
   } 
   .container {
     position: relative;
-    height: 60%
+
   }
 </style>
 

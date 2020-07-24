@@ -3,8 +3,8 @@ import { validateUser, createToken } from '../../mongoose'
 
 export async function post(req, res){
 //REMOVE CONSOLE.LOG EMAIL AND PASSWORD BEFORE DEPLOYING TO PRODUCTION
-  console.log(req.body.email)
-  console.log(req.body.password)
+  console.log(`email: ${req.body.email}`)
+  console.log(`password ${req.body.password}`)
   validateUser(req.body.email, req.body.password, function(err, user){
     if (err){
       console.log(err)

@@ -19,8 +19,8 @@ export async function post(req, res){
           const expireInOne = new Date()
           expireInOne.setHours(expireInOne.getHours() + 6)
           console.log('creating token...')
-          res.statusCode = 201
-          res.setHeader('Set-Cookie', `authToken=${token}; Expires=${expireInOne}; HttpOnly; Path=/`)
+          res.statusCode = 401
+          //res.setHeader('Set-Cookie', `authToken=${token}; Expires=${expireInOne}; HttpOnly; Path=/`)
           res.end()
       })
       }
