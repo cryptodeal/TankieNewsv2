@@ -1,16 +1,19 @@
 import { validateUser, createToken } from '../../mongoose'
 
+//implement server side form validation
 
 export async function post(req, res){
 //REMOVE CONSOLE.LOG EMAIL AND PASSWORD BEFORE DEPLOYING TO PRODUCTION
   console.log(`email: ${req.body.email}`)
   console.log(`password ${req.body.password}`)
+  let email = req.body.email
+  let pwd = req.body.pwd
   validateUser(req.body.email, req.body.password, function(err, user){
     if (err){
       console.log(err)
       res.statusCode = 500
-        res.end()
-    } if (user) {
+      res.end()
+    } else if (user) {
       createToken(user).then(token =>{
           const expireInOne = new Date()
           expireInOne.setHours(expireInOne.getHours() + 6)

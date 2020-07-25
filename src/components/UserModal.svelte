@@ -1,6 +1,6 @@
 {#if show}
 <div>
-  <div class="modal-overlay" data-close on:click={overlay_click} transition:fade={{duration: 150}}>
+  <div class="modal-overlay" data-close on:click={overlay_click} transition:fade={{duration: 200}}>
     <div class="modal-container">
       <main>
         <Binder {tabs} />
@@ -46,8 +46,8 @@
 .modal-container {
   position: relative;
   background-color: #ffffff;
-  width: 50vw;
-  height: 50vh;
+  width: auto;
+  height: auto;
   margin: 1rem auto 0.2rem;
   box-shadow: 0 3px 10px #555;
 }

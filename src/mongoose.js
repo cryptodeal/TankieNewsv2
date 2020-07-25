@@ -28,6 +28,9 @@ export async function createUser(email, password, cb) {
 
 export async function validateUser(email, password, cb) {
   let user = await User.findOne({email: email})
+  if(!user){
+    return cb(null, null)
+  }
   user.comparePassword(password, async function(err, isMatch){
     if(err) return cb(err)
     if(!isMatch){
@@ -109,8 +112,8 @@ export function initArticle(title){
   return post.save()
 }
 
-export function deleteArticle(title){
-  return Post.findOneAndDelete({title: title})
+export function deleteArticle(id){
+  return Post.findByIdAndDelete({_id: id})
 }
 
 export function listArticles(){

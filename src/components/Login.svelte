@@ -66,29 +66,29 @@
     <input class='input'
       type='text'
       id='email'
-      name="email"
+      name='email'
       bind:value={email}
       class:field-danger={!$emailValidity.valid}
       class:field-success={$emailValidity.valid}
       use:emailValidate={email}
     />
     {#if $emailValidity.dirty && !$emailValidity.valid}
-      <p class="validation-hint">
+      <p class='validation-hint'>
         INVALID: {$emailValidity.message} 
       </p>
     {/if}
     <label for='password'>Password</label>
     <input class='input'
-      type="password"
+      type='password'
       id='password'
-      name="password"
+      name='password'
       bind:value={password} 
       class:field-danger={!$pwdValidity.valid}
       class:field-success={$pwdValidity.valid}
       use:pwdValidate={password}
     />
     {#if $pwdValidity.dirty && !$pwdValidity.valid}
-      <p class="validation-hint">
+      <p class='validation-hint'>
         INVALID: {$pwdValidity.message} 
       </p>
     {/if}

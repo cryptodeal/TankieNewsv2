@@ -21,6 +21,9 @@
   import 'quill/dist/quill.snow.css'
   import Datepicker from 'svelte-calendar'
   import Sidebar from '../../../../components/Sidebar.svelte'
+  let values = {
+    content: {}
+  }
   const { session } = stores()
   let sidebar_show = false;
   let quill;
@@ -28,30 +31,29 @@
   let n;
   //console.log(id)
   let brief = ''
-  if (article.content.brief) brief = article.content.brief
+  if (article.content.brief) values.content.brief = article.content.brief
   let editor;
   let stateOptions = ['draft', 'published', 'archived']
-  let state = article.state;
-  let title = article.title;
+  values.state = article.state;
+  values.title = article.title;
   const today = new Date();
   let start = new Date();
-  let dateFormat = '#{l}, #{F} #{j}, #{Y}';
+  let dateFormat = '#{m}/#{d}/#{Y}';
   let formattedSelected
   let dateChosen
   if (article.publishedDate){
     formattedSelected = article.publishedDate;
     dateChosen = true;
   } else {
-    formattedSelected;
     dateChosen = false;
   }
-  let authors = []
-  let selectedCat = []
+  values.author = []
+  values.categories = []
   article.author.map(auth => {
-    authors.push({value: auth._id, label: auth.email})
+    values.author.push({value: auth._id, label: auth.email})
   })
   article.categories.map(cat => {
-    selectedCat.push({value: cat._id, label: cat.name})
+    values.categories.push({value: cat._id, label: cat.name})
   })
 
 	onMount(async() => {
@@ -146,22 +148,12 @@
   })
 
   async function saveArticle() {
-    let body = {}
-    if (title) body.title = title
-    if (state) body.state = state.value
-    if (formattedSelected) body.publishedDate = formattedSelected
-    if (authors) body.author = authors
-    if (selectedCat) body.categories = selectedCat
-    if (brief || quill.root.innerHTML){
-      let content = {}
-      if (brief) content.brief = brief
-      if (quill.root.innerHTML) content.extended = quill.root.innerHTML
-      body.content = content
-    }
+    values.content.extended = quill.root.innerHTML
+    if (formattedSelected) values.publishedDate = formattedSelected
+    if (values.state) values.state = values.state.value
     let id = {_id: _id}
-    console.log(body)
-    console.log(`here is the inner html: ${quill.root.innerHTML}`)
-    let res = await fetch(`api/content/articles`, {
+    console.log(values)
+    return fetch(`api/content/articles`, {
       method: "POST",
       mode: 'cors',
       credentials: 'include',
@@ -169,12 +161,16 @@
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        article: body,
+        article: values,
         id: id
       })
+    }).then(res => {
+      if(res.status === 409){
+        notifier.danger('Post already exists')
+      } else if(res.status === 201){
+        notifier.success('Post saved successfully')
+      }
     })
-    const data = await res.json();
-		console.log(data)
   };
 
   async function deleteArticle() {
@@ -187,7 +183,7 @@
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        title: title
+        id: _id
       })
     })
     window.location.href= `admin/articles` 
@@ -269,6 +265,7 @@
 </svelte:head>
 
 <main>
+  <NotificationDisplay bind:this={n} />
   <div class="row">
     <div class='side'>
       <Sidebar bind:show={sidebar_show}/>
@@ -277,14 +274,13 @@
       <button class="openbtn" on:click={() => sidebar_show = !sidebar_show}>☰ Open Sidebar</button>
     </div>
     <div class="column2">
-      <NotificationDisplay bind:this={n} />
       <h1>Edit Article</h1>
 			<Grid container gutter={12}>
         <Grid xs={12} md={2} lg={1}>
           Title:
         </Grid>
         <Grid xs={12} md={10} lg={11}>
-          <input type="text" bind:value={title} />
+          <input type="text" bind:value={values.title} />
         </Grid>
       </Grid>
       <br/>
@@ -293,11 +289,11 @@
           State:
         </Grid>
         <Grid xs={12} md={10} lg={11}>
-          <Select items={stateOptions} bind:selectedValue={state} inputStyles="box-sizing: border-box;"></Select>
+          <Select items={stateOptions} bind:selectedValue={values.state} inputStyles="box-sizing: border-box;"></Select>
         </Grid>
       </Grid>
       <br/>
-      {#if state.value == 'published'}
+      {#if values.state.value == 'published'}
         <Grid container gutter={12}>
           <Grid xs={12} md={2} lg={1}>
             Published Date:
@@ -326,7 +322,7 @@
           Authors:
         </Grid>
         <Grid xs={12} md={10} lg={11}>
-          <Select items={contributors} isMulti={true} bind:selectedValue={authors}></Select>
+          <Select items={contributors} isMulti={true} bind:selectedValue={values.author}></Select>
         </Grid>
       </Grid>
       <br/>
@@ -335,7 +331,7 @@
           Categories:
         </Grid>
         <Grid xs={12} md={10} lg={11}>
-          <Select items={categories} isMulti={true} bind:selectedValue={selectedCat}></Select>
+          <Select items={categories} isMulti={true} bind:selectedValue={values.categories}></Select>
         </Grid>
       </Grid>
       <br/>
@@ -345,7 +341,7 @@
         </Grid>
         <Grid xs={12} md={10} lg={11}>
           <form>
-            <Textarea name={'Content Brief'} type='text' bind:value={brief} />
+            <Textarea name={'Content Brief'} type='text' bind:value={values.content.brief} />
           </form>
         </Grid>
       </Grid>

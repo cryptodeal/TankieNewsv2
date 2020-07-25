@@ -42,8 +42,8 @@ export async function del(req, res) {
       }
     else {
       console.log(verifiedJwt)
-      console.log(`DELETE request received! Title: ${req.body.title}`)
-      deleteArticle(req.body.title).then(deleted => {
+      console.log(`DELETE request received! ID: ${req.body.id}`)
+      deleteArticle(req.body.id).then(deleted => {
         if(!deleted){
           console.log('cannot find post to delete')
           res.statusCode = 409

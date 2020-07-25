@@ -4,7 +4,7 @@
   import Image from 'svelte-image'; 
 	let activeTab = 0;
 	$: activeComponent = tabs[activeTab].component;
-	$: backpack = tabs[activeTab].backpack
+	//$: backpack = tabs[activeTab].backpack
 </script>
 
 <style>
@@ -33,11 +33,12 @@
   }
   .imageContainer {
     text-align: center;
-    height: 10%
+    position: inherit;
+    width: 30vw;
   } 
   .container {
-    position: relative;
-
+    position: inherit;
+    height: 15vh;
   }
 </style>
 
@@ -56,6 +57,9 @@
     <Image class='cool' src='tnn.png' alt='TNN logo small'/>
   </div>
   <div class="container">
-    <svelte:component this={activeComponent} {backpack} />
+    <!--
+      <svelte:component this={activeComponent} {backpack} />
+    -->
+    <svelte:component this={activeComponent} />
   </div>
 </flex-container>
