@@ -20,10 +20,8 @@ export function post(req, res){
         } else{
           console.log(`Post stored to databased successfully: ${article}`)
           res.statusCode = 201
-          res.end(JSON.stringify({
-              message: `Post saved successfully`
-          }));
-          }
+          res.end()
+        }
       }).catch(err => {
         console.log(err)
         res.statusCode = 500

@@ -40,10 +40,18 @@
   let start = new Date();
   let dateFormat = '#{m}-#{d}-#{Y}';
   let formattedSelected
+  let selected
+  let selectedDate
   let dateChosen
   let isDateChosen
   if (article.publishedDate || !values.publishedDate){
-    values.publishedDate = `${article.publishedDate.slice(5,7)}-${article.publishedDate.slice(8,10)}-${article.publishedDate.slice(0,4)}`
+    let date = {
+      month: article.publishedDate.slice(5,7),
+      day: article.publishedDate.slice(8,10),
+      year: article.publishedDate.slice(0,4)
+    }
+    values.publishedDate = `${date.month}-${date.day}-${date.year}`
+    selectedDate = new Date(parseInt(date.year, 10), parseInt(date.month, 10)-1, parseInt(date.day, 10))
     isDateChosen = true;
   } else {
     isDateChosen = false;
@@ -169,13 +177,8 @@
     }).then(res => {
       if(res.status === 409){
         notifier.danger('Post already exists')
-        //event.preventDefault()
-        //return values.publishedDate = `${article.publishedDate.slice(5,7)}-${article.publishedDate.slice(8,10)}-${article.publishedDate.slice(0,4)}`
       } else if(res.status === 201){
         notifier.success('Post saved successfully')
-        //event.preventDefault()
-        //return values.publishedDate = `${article.publishedDate.slice(5,7)}-${article.publishedDate.slice(8,10)}-${article.publishedDate.slice(0,4)}`
-        console.log(values.publishedDate)
       }
     })
   };
@@ -312,6 +315,7 @@
             <Datepicker
             format={dateFormat}
             bind:formattedSelected={values.publishedDate}
+            bind:selected={selectedDate}
             bind:dateChosen={isDateChosen}
             highlightColor='#d74e4d'
             dayBackgroundColor='#efefef'
