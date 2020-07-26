@@ -9,7 +9,7 @@ export function post(req, res){
       }
     else {
       console.log(verifiedJwt)
-      console.log(`article id to modify: ${JSON.stringify(req.body.id)}\nModified content: ${JSON.stringify(req.body.article)}`)
+      console.log(`article id to modify: ${JSON.stringify(req.body.id)}`)
       saveArticle(req.body.id, req.body.article).then(article => {
         if(!article){
           console.log('Post already exists')

@@ -22,7 +22,7 @@
   import Datepicker from 'svelte-calendar'
   import Sidebar from '../../../../components/Sidebar.svelte'
   let values = {
-    content: {}
+    content: {},
   }
   const { session } = stores()
   let sidebar_show = false;
@@ -38,15 +38,17 @@
   values.title = article.title;
   const today = new Date();
   let start = new Date();
-  let dateFormat = '#{m}/#{d}/#{Y}';
+  let dateFormat = '#{m}-#{d}-#{Y}';
   let formattedSelected
   let dateChosen
-  if (article.publishedDate){
-    formattedSelected = article.publishedDate;
-    dateChosen = true;
+  let isDateChosen
+  if (article.publishedDate || !values.publishedDate){
+    values.publishedDate = `${article.publishedDate.slice(5,7)}-${article.publishedDate.slice(8,10)}-${article.publishedDate.slice(0,4)}`
+    isDateChosen = true;
   } else {
-    dateChosen = false;
+    isDateChosen = false;
   }
+
   values.author = []
   values.categories = []
   article.author.map(auth => {
@@ -148,8 +150,8 @@
   })
 
   async function saveArticle() {
+    console.log(values.publishedDate)
     values.content.extended = quill.root.innerHTML
-    if (formattedSelected) values.publishedDate = formattedSelected
     if (values.state) values.state = values.state.value
     let id = {_id: _id}
     console.log(values)
@@ -167,8 +169,13 @@
     }).then(res => {
       if(res.status === 409){
         notifier.danger('Post already exists')
+        //event.preventDefault()
+        //return values.publishedDate = `${article.publishedDate.slice(5,7)}-${article.publishedDate.slice(8,10)}-${article.publishedDate.slice(0,4)}`
       } else if(res.status === 201){
         notifier.success('Post saved successfully')
+        //event.preventDefault()
+        //return values.publishedDate = `${article.publishedDate.slice(5,7)}-${article.publishedDate.slice(8,10)}-${article.publishedDate.slice(0,4)}`
+        console.log(values.publishedDate)
       }
     })
   };
@@ -188,6 +195,9 @@
     })
     window.location.href= `admin/articles` 
   };
+  function printDate(){
+    console.log(values.publishedDate)
+  }
 </script>
 
 <style>
@@ -301,16 +311,16 @@
           <Grid xs={12} md={10} lg={11}>
             <Datepicker
             format={dateFormat}
-            bind:formattedSelected
-            bind:dateChosen
+            bind:formattedSelected={values.publishedDate}
+            bind:dateChosen={isDateChosen}
             highlightColor='#d74e4d'
             dayBackgroundColor='#efefef'
             dayTextColor='#333'
             dayHighlightedBackgroundColor='#d74e4d'
             dayHighlightedTextColor='#fff'
             >
-              <button class='custom-button'>
-                {#if dateChosen} Chosen: {formattedSelected} {:else} Pick a date {/if}
+              <button class='custom-button' on:click={printDate}>
+                {#if isDateChosen} Chosen: {values.publishedDate} {:else} Pick a date {/if}
               </button>
             </Datepicker>
           </Grid>

@@ -71,7 +71,7 @@ export function routerVerify(token){
 }
 
 export async function saveArticle(id, body){
-  let result = await Post.exists({ title: body.title })
+  let result = await Post.exists(id)
   if (result == false ){
     //console.log(`inside savePost! title: ${title}, content extended: ${extended}, authors: ${author[0].value}, state: ${state}, date published: ${publishedDate}`)
     let authors = [];
