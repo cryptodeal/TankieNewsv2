@@ -8,7 +8,8 @@
 <script>
     export let categories;
     import Sidebar from '../../../components/Sidebar.svelte'
-    import CatModal from '../../../components/CatModal.svelte';
+    import Content from '../../../components/NewCatContent.svelte'
+    import Modal from 'svelte-simple-modal'
     import { goto, stores } from '@sapper/app'
     let sidebar_show = false;
     let catmodal_show = false;
@@ -53,7 +54,6 @@
 
 <main>
   <div class="row">
-    <CatModal bind:show={catmodal_show} />
     <div class='side'>
       <Sidebar bind:show={sidebar_show}/>
     </div>
@@ -62,20 +62,18 @@
     </div>
     <div class="column2">
         <h1>Article Categories</h1>
-            <ul>
-              <button class="addCatBtn" on:click={() => catmodal_show = !catmodal_show}>New Category</button>
-              {#if categories.length}
-                {#each categories as category}
-                    <!-- we're using the non-standard `rel=prefetch` attribute to
-                            tell Sapper to load the data for the page as soon as
-                            the user hovers over the link or taps it, instead of
-                            waiting for the 'click' event -->
-                    <li>{category.name}</li>
-                {/each}
-              {:else}
-                <p>No categories to display</p>
-              {/if}
-            </ul>
+        <Modal>
+          <Content />
+        </Modal>
+        <ul>
+          {#if categories.length}
+            {#each categories as category}
+              <li>{category.name}</li>
+            {/each}
+          {:else}
+            <p>No categories to display</p>
+          {/if}
+        </ul>
     </div>
   </div>
 </main>

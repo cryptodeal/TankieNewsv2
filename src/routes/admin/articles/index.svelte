@@ -9,8 +9,9 @@
 <script>
     export let articles;
     import Sidebar from '../../../components/Sidebar.svelte'
-    import ArticleModal from '../../../components/ArticleModal.svelte'
     import { goto, stores } from '@sapper/app'
+    import Content from '../../../components/NewArticleContent.svelte'
+    import Modal from 'svelte-simple-modal'
     let sidebar_show = false;
     let artmodal_show = false;
 </script>
@@ -58,7 +59,7 @@
 
 <main>
   <div class="row">
-    <ArticleModal bind:show={artmodal_show} />
+
     <div class='side'>
       <Sidebar bind:show={sidebar_show}/>
     </div>
@@ -67,16 +68,14 @@
     </div>
     <div class="column2">
         <h1>Recent articles</h1>
-            <ul>
-              <button class="addArtBtn" on:click={() => artmodal_show = !artmodal_show}>New Article</button>
-              {#each articles as article}
-                  <!-- we're using the non-standard `rel=prefetch` attribute to
-                          tell Sapper to load the data for the page as soon as
-                          the user hovers over the link or taps it, instead of
-                          waiting for the 'click' event -->
-                  <li><a rel='prefetch' href='admin/articles/edit/{article.slug}'>{article.title}</a></li>
-              {/each}
-            </ul>
+          <Modal>
+            <Content />
+          </Modal>
+          <ul>
+            {#each articles as article}
+              <li><a rel='prefetch' href='admin/articles/edit/{article.slug}'>{article.title}</a></li>
+            {/each}
+          </ul>
     </div>
   </div>
 </main>

@@ -17,28 +17,22 @@
 		border-bottom: 1px solid #d74e4d;
 		cursor: auto;
   }
+  .binder {
+    margin-bottom: 3em;
+  }
   .titles {
     text-align: center;
-    height: 5vh;
-    margin-bottom: 2vh;
+    height: auto;
+  }
+  .logo{
+    width: 50%;
+    align-content: center;
   }
   flex-container {
     display: flex;
     flex-direction: column;
-    width: 40vw;
-    margin-right: 5vw;
-    margin-left: 5vw;
-    height: 43vh;
     align-items: center;
-  }
-  .imageContainer {
-    text-align: center;
-    position: inherit;
-    width: 30vw;
-  } 
-  .container {
-    position: inherit;
-    height: 15vh;
+    margin-top: 0;
   }
 </style>
 
@@ -53,13 +47,9 @@
   </div>
 </div>
 <flex-container>
-  <div class=imageContainer>
-    <Image class='cool' src='tnn.png' alt='TNN logo small'/>
+  <div class='logo'>
+    <Image src='tnn.png' alt='TNN logo small'/>
   </div>
-  <div class="container">
-    <!--
-      <svelte:component this={activeComponent} {backpack} />
-    -->
-    <svelte:component this={activeComponent} />
-  </div>
+      <!-- <svelte:component this={activeComponent} {backpack} /> -->
+  <svelte:component this={activeComponent} />
 </flex-container>

@@ -44,7 +44,7 @@
   let selectedDate
   let dateChosen
   let isDateChosen
-  if (article.publishedDate || !values.publishedDate){
+  if (article.publishedDate || values.publishedDate){
     let date = {
       month: article.publishedDate.slice(5,7),
       day: article.publishedDate.slice(8,10),

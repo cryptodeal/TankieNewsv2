@@ -51,6 +51,7 @@
     "svelte-calendar": "^1.5.0",
     "svelte-grid-responsive": "^0.3.0",
     "svelte-image": "^0.2.6",
-    "svelte-select": "^3.10.0"
+    "svelte-select": "^3.10.0",
+    "svelte-simple-modal": "^0.4.2"
   }
 }

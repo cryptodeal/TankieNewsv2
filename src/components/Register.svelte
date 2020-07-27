@@ -31,12 +31,6 @@
   }
 </script>
 <style>
-  .body {
-		display: flex;
-		flex-direction: column;
-    width: 30vw;
-	}
-	
 	input {
 		outline: none;
 		border-width: 2px;
@@ -59,38 +53,36 @@
 </style>
 
 <NotificationDisplay bind:this={n} />
-<div class=body>
-  <form on:submit|preventDefault={register(email, password)}>
-    <label for='email'>Email</label>
-    <input class='input'
-      type='text'
-      id='email'
-      name='email'
-      bind:value={email}
-      class:field-danger={!$emailValidity.valid}
-      class:field-success={$emailValidity.valid}
-      use:emailValidate={email}
-    />
-    {#if $emailValidity.dirty && !$emailValidity.valid}
-      <p class='validation-hint'>
-        INVALID: {$emailValidity.message} 
-      </p>
-    {/if}
-    <label for='password'>Password</label>
-    <input class='input'
-      type='password'
-      id='password'
-      name='password'
-      bind:value={password} 
-      class:field-danger={!$pwdValidity.valid}
-      class:field-success={$pwdValidity.valid}
-      use:pwdValidate={password}
-    />
-    {#if $pwdValidity.dirty && !$pwdValidity.valid}
-      <p class='validation-hint'>
-        INVALID: {$pwdValidity.message} 
-      </p>
-    {/if}
-    <button disabled={!$emailValidity.valid || !$pwdValidity.valid}>Login</button>
-  </form>
-</div>
+<form on:submit|preventDefault={register(email, password)}>
+  <label for='email'>Email</label>
+  <input class='input'
+    type='text'
+    id='email'
+    name='email'
+    bind:value={email}
+    class:field-danger={!$emailValidity.valid}
+    class:field-success={$emailValidity.valid}
+    use:emailValidate={email}
+  />
+  {#if $emailValidity.dirty && !$emailValidity.valid}
+    <p class='validation-hint'>
+      INVALID: {$emailValidity.message} 
+    </p>
+  {/if}
+  <label for='password'>Password</label>
+  <input class='input'
+    type='password'
+    id='password'
+    name='password'
+    bind:value={password} 
+    class:field-danger={!$pwdValidity.valid}
+    class:field-success={$pwdValidity.valid}
+    use:pwdValidate={password}
+  />
+  {#if $pwdValidity.dirty && !$pwdValidity.valid}
+    <p class='validation-hint'>
+      INVALID: {$pwdValidity.message} 
+    </p>
+  {/if}
+  <button disabled={!$emailValidity.valid || !$pwdValidity.valid}>Login</button>
+</form>

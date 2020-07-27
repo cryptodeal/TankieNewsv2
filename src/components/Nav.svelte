@@ -1,8 +1,8 @@
 <script>
   import { stores } from '@sapper/app'
-  import UserModal from './UserModal.svelte'
+  import Modal from 'svelte-simple-modal'
+  import Content from './UserContent.svelte'
   const { session } = stores()
-  let usermodal_show = false;
   export let segment
 </script>
 
@@ -53,9 +53,6 @@
 		display: block;
   }
   
-  .modallink{
-    cursor: pointer;
-  }
 </style>
 
 <nav>
@@ -73,12 +70,14 @@
 	</ul>
   <ul>
 	{#if !$session.authenticated}
-    <li><a class='modallink' href={null} on:click={() => usermodal_show = !usermodal_show}>login/register</a></li>
+    <li>
+      <Modal>
+        <Content/>
+      </Modal>
+    </li>
     {/if}
     {#if $session.authenticated}
     <li><a href='logout'>log out</a></li>
     {/if}
   </ul>
 </nav>
-<UserModal bind:show={usermodal_show} />
-
