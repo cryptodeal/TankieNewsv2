@@ -152,3 +152,7 @@ export function listUsers(){
 export function updateUser(id, updated) {
   return User.findByIdAndUpdate(id, {$set: updated}, {new: true}).exec()
 }
+
+export function updateCat(id, updated) {
+  return Category.findByIdAndUpdate(id, {$set: updated}, {new: true}).exec()
+}

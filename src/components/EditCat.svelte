@@ -14,8 +14,12 @@
 		onCancel();
 		close();
   }
-  let name = null;
-  function addCategory() {
+  export let name;
+  export let _id;
+  let id = {_id: _id}
+  let updated = {}
+  if (name !== undefined && name !== null && name !== '') updated.name = name
+  function updateCategory() {
     return fetch(`admin/categories.json`, {
       method: "POST",
       mode: 'cors',
@@ -24,7 +28,8 @@
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        name: name
+        id: id,
+        updated: updated
       })
     }).then(res => window.location.href= 'admin/categories')
   };
@@ -58,13 +63,13 @@
 <label><h3>Category Name:</h3></label>
 <input
   type="text"
-  bind:value={name}
+  bind:value={updated.name}
   id='category-name'
   name="Category Name"
   placeholder="Category name..."
   class:field-danger={!$catValidity.valid}
   class:field-success={$catValidity.valid}
-  use:catValidate={name}
+  use:catValidate={updated.name}
 />
 {#if $catValidity.dirty && !$catValidity.valid}
   <p class='validation-hint'>
@@ -76,7 +81,7 @@
 	<button on:click={_onCancel}>
 		Cancel
 	</button>
-	<button disabled={!$catValidity.valid} on:click={addCategory}>
-	  Add Category
+	<button disabled={!$catValidity.valid} on:click={updateCategory}>
+		Save
 	</button>
 </div>

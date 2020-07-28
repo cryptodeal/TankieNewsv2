@@ -8,11 +8,16 @@
 <script>
     export let categories;
     import Sidebar from '../../../components/Sidebar.svelte'
-    import Content from '../../../components/NewCatContent.svelte'
+    import Content from '../../../components/CatContent.svelte'
+    import CatListItem from '../../../components/CatListItem.svelte'
+    import VirtualList from '@sveltejs/svelte-virtual-list'
     import Modal from 'svelte-simple-modal'
     import { goto, stores } from '@sapper/app'
     let sidebar_show = false;
-    let catmodal_show = false;
+    let nameSearch = '';
+    $: filteredList = categories.filter(cat => cat.name.toLowerCase().indexOf(nameSearch.toLowerCase()) !== -1);
+	  let start;
+    let end;
 </script>
 
 <style>
@@ -49,6 +54,12 @@
     padding: 10px 15px;
     border: none;
   }
+  .container {
+		border-top: 1px solid #333;
+		border-bottom: 1px solid #333;
+		min-height: 200px;
+		height: calc(60vh - 15em);
+	}
 </style>
 
 
@@ -65,15 +76,15 @@
         <Modal>
           <Content />
         </Modal>
-        <ul>
-          {#if categories.length}
-            {#each categories as category}
-              <li>{category.name}</li>
-            {/each}
-          {:else}
-            <p>No categories to display</p>
-          {/if}
-        </ul>
+        <h3>Email: </h3> <input type='text' bind:value={nameSearch}/>
+        <div class='container'>
+          <VirtualList items={filteredList} bind:start bind:end let:item>
+            <Modal>
+              <CatListItem {...item}/>
+            </Modal>
+	        </VirtualList>
+	        <p>showing users {start}-{end}</p>
+        </div>
     </div>
   </div>
 </main>
