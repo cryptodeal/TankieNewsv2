@@ -31,7 +31,12 @@
         id: id,
         updated: updated
       })
-    }).then(res => window.location.href= 'admin/categories')
+    }).then(res => {
+      return res.status === 401 ? notifier.danger(`Authentication expired`)
+      : res.status === 409 ? notifier.danger(`Failed to update user`)
+      : res.status === 500 ? notifier.danger(`Server error`)
+      : window.location.href= `admin/categories`
+    })
   };
 </script>
 
