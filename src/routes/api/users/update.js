@@ -1,13 +1,4 @@
-import { updateUser, listUsers, verifyToken } from '../../mongoose'
-
-export function get(req, res) {
-	listUsers().then(users => {
-    res.writeHead(200, {
-			'Content-Type': 'application/json'
-		});
-		res.end(JSON.stringify(users));
-  }).catch(console.error)
-}
+import { updateUser } from './../../../mongoose.js'
 
 export function post(req, res){
   verifyToken(req.cookies['authToken'], function(err, verifiedJwt){

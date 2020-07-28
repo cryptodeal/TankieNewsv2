@@ -15,8 +15,8 @@
 		close();
   }
   let title = null;
-  async function initArticle() {
-    let res = await fetch(`admin/articles.json`, {
+  function initArticle() {
+    return fetch(`admin/articles.json`, {
       method: "POST",
       mode: 'cors',
       credentials: 'include',
@@ -26,10 +26,9 @@
       body: JSON.stringify({
         title: title
       })
+    }).then(res => res.json()).then(data => {
+        window.location.href = `admin/articles/edit/${data.slug}` 
     })
-    const data = await res.json();
-    window.location.href = `admin/articles/edit/${data.slug}` 
-    //console.log(data)
   };
 </script>
 

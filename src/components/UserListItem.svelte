@@ -1,19 +1,31 @@
 <script>
   import Grid from 'svelte-grid-responsive'
-  import EditUserModal from './EditUserModal.svelte';
+  //import EditUserModal from './EditUserModal.svelte';
 	export let email;
   export let scope;
-  export let showEditUserModal = false;
+  export let _id;
+  //export let showEditUserModal = false;
+  import { getContext } from 'svelte';
+  import EditUser from './EditUser.svelte';
+
+  const { open } = getContext('simple-modal');
+
+  const showEditUser = () => {
+    open(EditUser, {_id: _id, email: email, scope: scope});
+  };
 </script>
 <style>
-  .list {
-    position: absolute;
-    top: 50%;
-    -ms-transform: translateY(-50%);
-    transform: translateY(-50%);
+  @media screen and (min-width: 575px) {
+    button {
+      margin: 0;
+      position: absolute;
+      top: 50%;
+      -ms-transform: translateY(-50%);
+      transform: translateY(-50%);
+    }
   }
   .card {
-		position: relative;
+		position: inherit;
 		margin: 0.5em;
 		padding: 0.5em 0.5em 0.5em 3em;
 		border: 1px solid #eee;
@@ -35,25 +47,10 @@
         <p>{scope}</p>
       </Grid>
       <Grid xs={12} md={4} lg={4}>
-        <div class='list'>
-          <button on:click="{() => showEditUserModal = true}">
-            Details
-          </button>
+        <div class=button>
+          <button on:click={showEditUser}>Edit</button>
         </div>
       </Grid>
     </Grid>
   </div>
 
-{#if showEditUserModal}
-  <style>
-    .card{
-      overflow: hidden;
-    }
-  </style>
-  <EditUserModal on:close="{() => showEditUserModal = false}">
-    <h4 class="title" slot="header">
-      Details for User <code>{email}</code>
-    </h4>
-    <p>{scope}</p>
-  </EditUserModal>
-{/if}

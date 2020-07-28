@@ -9,17 +9,16 @@
 </script>
 <script>
     export let items;
+    import Modal from 'svelte-simple-modal'
     import Grid from 'svelte-grid-responsive'
     import Sidebar from '../../components/Sidebar.svelte'
     import VirtualList from '@sveltejs/svelte-virtual-list'
     import UserListItem from '../../components/UserListItem.svelte'
     import { goto, stores } from '@sapper/app'
-    //console.log(items)
     let sidebar_show = false;
     let emailSearch = '';
     let scopeSearch = '';
     let useritemlist_show = false;
-    //let filteredList = [];
 	  $: filteredList = items.filter(item => item.email.toLowerCase().indexOf(emailSearch.toLowerCase()) !== -1 && item.scope.toLowerCase().indexOf(scopeSearch.toLowerCase()) !== -1);
 	  let start;
     let end;
@@ -73,10 +72,10 @@
     <div class='column2'>
       <h1>Manage Users</h1>
         <Grid container gutter={12}>
-          <Grid xs={4} md={4} lg={4}>
+          <Grid xs={12} md={4} lg={4}>
             <h3>Email: </h3> <input type='text' bind:value={emailSearch}/>
           </Grid>
-          <Grid xs={4} md={4} lg={4}>
+          <Grid xs={12} md={4} lg={4}>
             <h3>Permissions: </h3>
             <select bind:value={scopeSearch}>
               <option value=''>-- Select User Type --</option>
@@ -84,14 +83,16 @@
               <option value='user'>user</option>
             </select>
           </Grid>
-          <Grid xs={4} md={4} lg={4}>
+          <Grid xs={0} md={4} lg={4}>
             <h3>Edit:</h3>
           </Grid>
         </Grid>
         <br/>
         <div class='container'>
           <VirtualList items={filteredList} bind:start bind:end let:item>
-		        <UserListItem {...item}/>
+            <Modal>
+              <UserListItem {...item}/>
+            </Modal>
 	        </VirtualList>
 	        <p>showing users {start}-{end}</p>
         </div>

@@ -148,3 +148,7 @@ export async function addCategory(name){
 export function listUsers(){
   return User.find({}).exec()
 }
+
+export function updateUser(id, updated) {
+  return User.findByIdAndUpdate(id, {$set: updated}, {new: true}).exec()
+}
