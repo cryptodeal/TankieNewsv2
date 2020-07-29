@@ -6,6 +6,7 @@ import cookieParser from 'cookie-parser'
 import jwt from 'jsonwebtoken'
 import mongoSanitize from 'express-mongo-sanitize'
 const { json } = require('body-parser');
+const fileUpload = require('express-fileupload');
 const secureRandom = require('secure-random');
 import { routerVerify } from './mongoose'
 
@@ -24,6 +25,7 @@ polka()
     cookieParser(),
     json(),
     mongoSanitize(),
+    fileUpload(),
 
     (req, res, next) => {
       const token = req.cookies['authToken']

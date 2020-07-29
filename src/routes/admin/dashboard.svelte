@@ -4,6 +4,17 @@
   let sidebar_show = false;
   //TODO: figure out best way to import css from node module for the editor, which is created onMount
   const { session } = stores()
+  function upload (e){
+    const file = e.target.files[0]
+    const fd = new FormData();
+    fd.append('sampleFile', file);
+    return fetch('api/content/images/picture', {
+      method: 'POST',
+      body: fd
+    }).then(res => res.json())
+    .then(json => console.log(json))
+    .catch(err => console.error(err));
+  }
 </script>
 <style>
   * {
@@ -52,6 +63,7 @@
     </div>
     <div class="column2">
       <h1>Admin Dashboard</h1>
+      <input on:change={upload} type='file' >
     </div>
   </div>
 </main>

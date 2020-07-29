@@ -23,7 +23,6 @@
   })
       window.location.href= 'profile' 
   }
-
   async function login () {
     await fetch('api/session', {
       method: 'POST',
