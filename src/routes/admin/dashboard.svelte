@@ -1,6 +1,8 @@
 <script>
   import { goto, stores } from '@sapper/app'
   import Sidebar from '../../components/Sidebar.svelte'
+  import { NotificationDisplay, notifier } from '@beyonk/svelte-notifications'
+  let n;
   let sidebar_show = false;
   //TODO: figure out best way to import css from node module for the editor, which is created onMount
   const { session } = stores()
@@ -11,9 +13,11 @@
     return fetch('api/content/images/picture', {
       method: 'POST',
       body: fd
-    }).then(res => res.json())
-    .then(json => console.log(json))
-    .catch(err => console.error(err));
+    }).then(res => {
+      return res.status === 400 ? notifier.danger(`File not sent in upload`)
+      : res.status === 500 ? notifier.danger(`Upload failed`)
+      : notifier.success(`Upload successful`)
+    });
   }
 </script>
 <style>
@@ -54,6 +58,7 @@
 </style>
 
 <main>
+  <NotificationDisplay bind:this={n} />
   <div class="row">
     <div class='side'>
       <Sidebar bind:show={sidebar_show}/>
