@@ -14,23 +14,25 @@ export async function post(req, res){
   if(!file.mimetype.startsWith('image')) {
     return (res.statusCode=400,res.end('Images only!'));
   }
-
-  const promises = []
-  sizes.map(size => {
-    promises.push(webpEditUpload(size, file, baseName))
-    promises.push(jpegEditUpload(size, file, baseName))
+  
+  sharp(file.data).metadata().then(meta => {
+    let promises = []
+    console.log(meta.format)
+    if(meta.format === 'png'){
+      sizes.map(size => {
+        promises.push(webpEditUpload(size, file, baseName))
+        promises.push(pngEditUpload(size, file, baseName))        
+      })
+    } else {
+      sizes.map(size => {
+        promises.push(webpEditUpload(size, file, baseName))
+        promises.push(jpegEditUpload(size, file, baseName))       
+      })
+    }
+    return Promise.all(promises).then(data => {
+      data.map(datum => console.log(datum.Location))
+    })
   })
-
-  return Promise.all(promises).then(data => {
-    data.map(datum => console.log(datum.Location))
-  })
-
-  // Use the mv() method to place the file somewhere on your server
-//  sampleFile.mv(`uploads/${sampleFile.name}`, function(err) {
-//    if (err)
-//      return (res.statusCode=500,res.end(JSON.stringify(err)))
-//  });
-  //editImage(saved)
 }
 
 function jpegEditUpload(size, image, baseName){
@@ -66,6 +68,7 @@ function jpegEditUpload(size, image, baseName){
       return err
     });
 }
+
 function webpEditUpload(size, image, baseName){
   let webpOptions = {
     quality: 75,
@@ -88,6 +91,39 @@ function webpEditUpload(size, image, baseName){
     let params = {
       Bucket: S3_Bucket,
       Key: `${baseName}-${size}.webp`,
+      Body: data
+    }
+
+    let s3Promise = s3.upload(params).promise()
+    return s3Promise
+  })
+  .catch( err => { 
+    console.log(err)
+    return err;
+   });
+}
+
+function pngEditUpload(size, image, baseName){
+  let pngOptions = {
+    compressionLevel: 8, 
+    force: false
+  }
+  return sharp(image.data)
+  .resize({width: size, withoutEnlargement: true})
+  .png(pngOptions)
+  .toBuffer()
+  .then(data => { 
+    const S3_Bucket = `dev-tankienews`
+
+    AWS.config.update({
+      accessKeyId: process.env.AWS_ID,
+      secretAccessKey: process.env.AWS_SECRET
+    })
+    const s3 = new AWS.S3();
+
+    let params = {
+      Bucket: S3_Bucket,
+      Key: `${baseName}-${size}.png`,
       Body: data
     }
 
