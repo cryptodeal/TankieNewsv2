@@ -1,7 +1,7 @@
 {
   "name": "tankie-news",
   "description": "Tankie News",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "scripts": {
     "dev": "run-p dev:**",
     "dev:client": "sapper dev",
