@@ -7,8 +7,9 @@
 </script>
 
 <div class="field" style="--font-size: {size}rem;">
-	<textarea type="text" {disabled} {name} placeholder=" " bind:value use:autoresize autocomplete="false" style="{size > 1 && 'font-weight: bold;'}" rows="1" />
-	<label>{name}</label>
+  <label htmlFor='textArea'>{name}
+	  <textarea id='textArea' type="text" {disabled} {name} placeholder=" " bind:value use:autoresize autocomplete="false" style="{size > 1 && 'font-weight: bold;'}" rows="1" />
+  </label>
 </div>
 
 <style>

@@ -55,17 +55,18 @@
 		color: red;
 	}
 </style>
-<label><h3>Category Name:</h3></label>
-<input
-  type="text"
-  bind:value={name}
-  id='category-name'
-  name="Category Name"
-  placeholder="Category name..."
-  class:field-danger={!$catValidity.valid}
-  class:field-success={$catValidity.valid}
-  use:catValidate={name}
-/>
+<label htmlFor='category-name'><h3>Category Name:</h3>
+  <input
+    type="text"
+    bind:value={name}
+    id='category-name'
+    name="Category Name"
+    placeholder="Category name..."
+    class:field-danger={!$catValidity.valid}
+    class:field-success={$catValidity.valid}
+    use:catValidate={name}
+  />
+</label>
 {#if $catValidity.dirty && !$catValidity.valid}
   <p class='validation-hint'>
     INVALID: {$catValidity.message} 

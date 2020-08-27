@@ -65,7 +65,7 @@
 		color: red;
 	}
 </style>
-<label><h3>Category Name:</h3></label>
+<label htmlFor='category-name'><h3>Category Name:</h3>
 <input
   type="text"
   bind:value={updated.name}
@@ -76,6 +76,7 @@
   class:field-success={$catValidity.valid}
   use:catValidate={updated.name}
 />
+</label>
 {#if $catValidity.dirty && !$catValidity.valid}
   <p class='validation-hint'>
     INVALID: {$catValidity.message} 
