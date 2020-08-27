@@ -57,17 +57,18 @@
 		color: red;
 	}
 </style>
-<label><h3>Article Title:</h3></label>
-<input
-  type="text"
-  bind:value={title}
-  id='title'
-  name="title"
-  placeholder="Title..."
-  class:field-danger={!$titleValidity.valid}
-  class:field-success={$titleValidity.valid}
-  use:titleValidate={title}
-/>
+<label htmlFor='title'><h3>Article Title:</h3>
+  <input
+    type="text"
+    bind:value={title}
+    id='title'
+    name="title"
+    placeholder="Title..."
+    class:field-danger={!$titleValidity.valid}
+    class:field-success={$titleValidity.valid}
+    use:titleValidate={title}
+  />
+</label>
 {#if $titleValidity.dirty && !$titleValidity.valid}
   <p class='validation-hint'>
     INVALID: {$titleValidity.message} 

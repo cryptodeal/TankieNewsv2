@@ -39,12 +39,6 @@
   h3 {
 		text-align: center;
 	}
-	input {
-		width: 100%;
-    outline: none;
-  	border-width: 2px;
-    border-style: solid;
-	}
 	.buttons {
     padding-top: .5em;
 		display: flex;
