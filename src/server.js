@@ -11,7 +11,7 @@ const secureRandom = require('secure-random');
 import { routerVerify } from './mongoose'
 
 export let signingKey = secureRandom(256, {type: 'Buffer'});
-
+console.log(JSON.stringify(signingKey))
 import { guard } from '@beyonk/sapper-rbac'
 import routes from './config/routes.js'
 
